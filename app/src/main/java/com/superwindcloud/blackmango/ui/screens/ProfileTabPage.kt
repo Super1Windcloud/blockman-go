@@ -23,9 +23,9 @@ import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Paid
@@ -37,7 +37,6 @@ import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ViewInAr
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,6 +49,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.superwindcloud.blackmango.R
 import com.superwindcloud.blackmango.ui.navigation.ScreenBackground
 
@@ -59,8 +59,8 @@ fun ProfileTabPage(modifier: Modifier = Modifier) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding =
-                PaddingValues(start = 22.dp, top = 18.dp, end = 22.dp, bottom = 104.dp),
-            verticalArrangement = Arrangement.spacedBy(22.dp),
+                PaddingValues(start = 22.dp, top = 14.dp, end = 22.dp, bottom = 104.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
         ) {
             item { ProfileHero() }
             item { GuestNotice() }
@@ -72,48 +72,46 @@ fun ProfileTabPage(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ProfileHero() {
-    Box(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth().height(178.dp)) {
         Icon(
             imageVector = Icons.Filled.Edit,
             contentDescription = "编辑资料",
-            modifier = Modifier.align(Alignment.TopEnd).size(34.dp),
+            modifier = Modifier.align(Alignment.TopEnd).size(31.dp),
             tint = Color(0xFF15191F),
         )
         PinkDot(modifier = Modifier.align(Alignment.TopEnd).padding(top = 1.dp, end = 1.dp))
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 62.dp, end = 44.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, top = 48.dp, end = 44.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(R.drawable.profile_avatar),
                 contentDescription = "用户头像",
                 modifier =
-                    Modifier.size(92.dp)
+                    Modifier.size(88.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .border(5.dp, Color(0xFFDAB176), RoundedCornerShape(8.dp)),
+                        .border(4.dp, Color(0xFFDAB176), RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
             )
             Spacer(Modifier.width(28.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "guestuser6110448",
-                        style = MaterialTheme.typography.headlineSmall,
+                        fontSize = 25.sp,
+                        lineHeight = 29.sp,
                         fontWeight = FontWeight.Black,
                         color = Color.Black,
                     )
                     Spacer(Modifier.width(8.dp))
                     VipBadge()
                 }
-                Text(
-                    "用户名: 未设置",
-                    color = Color(0xFF8B8B90),
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                Text("用户名: 未设置", color = Color(0xFF8B8B90), fontSize = 18.sp, lineHeight = 23.sp)
                 Text(
                     "ID: 7301598686",
                     color = Color(0xFF8B8B90),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 18.sp,
+                    lineHeight = 23.sp,
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TinyCurrency(Icons.Filled.Paid, Color(0xFFFF47A8), Color(0xFFFFCC40))
@@ -121,7 +119,8 @@ private fun ProfileHero() {
                         "0",
                         modifier = Modifier.padding(horizontal = 18.dp),
                         color = Color(0xFF333333),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 23.sp,
+                        lineHeight = 26.sp,
                     )
                     Box(Modifier.height(28.dp).width(1.dp).background(Color(0xFFD6D6D8)))
                     TinyCurrency(Icons.Filled.ViewInAr, Color(0xFFFFD548), Color(0xFF9B7419))
@@ -129,7 +128,8 @@ private fun ProfileHero() {
                         "0",
                         modifier = Modifier.padding(start = 18.dp),
                         color = Color(0xFF333333),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 23.sp,
+                        lineHeight = 26.sp,
                     )
                 }
             }
@@ -141,14 +141,20 @@ private fun ProfileHero() {
 private fun VipBadge() {
     Box(
         modifier =
-            Modifier.width(62.dp)
-                .height(27.dp)
+            Modifier.width(58.dp)
+                .height(24.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Brush.horizontalGradient(listOf(Color(0xFFEFF7FF), Color(0xFFBBC9D5))))
                 .border(1.dp, Color(0xFF9DAEBB), RoundedCornerShape(4.dp)),
         contentAlignment = Alignment.Center,
     ) {
-        Text("VIP0", color = Color(0xFF27313B), fontWeight = FontWeight.Black)
+        Text(
+            "VIP0",
+            color = Color(0xFF27313B),
+            fontSize = 14.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Black,
+        )
     }
 }
 
@@ -159,19 +165,19 @@ private fun GuestNotice() {
             Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(22.dp))
                 .background(Color(0xFFECE8FF))
-                .padding(start = 28.dp, top = 28.dp, end = 22.dp, bottom = 28.dp),
+                .padding(start = 28.dp, top = 25.dp, end = 22.dp, bottom = 25.dp),
         verticalAlignment = Alignment.Bottom,
     ) {
         Text(
             text = "当前账号为游客账号，无法在其他设备登录，请完成注册以确保账号的安全性",
             modifier = Modifier.weight(1f),
             color = Color(0xFF111318),
-            style = MaterialTheme.typography.titleLarge,
+            fontSize = 21.sp,
+            lineHeight = 30.sp,
             fontWeight = FontWeight.Medium,
-            lineHeight = MaterialTheme.typography.titleLarge.lineHeight,
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("立刻注册", color = Color(0xFF8D62EA), style = MaterialTheme.typography.titleMedium)
+            Text("立刻注册", color = Color(0xFF8D62EA), fontSize = 18.sp, lineHeight = 22.sp)
             Box(
                 modifier =
                     Modifier.padding(start = 8.dp)
@@ -193,19 +199,19 @@ private fun ShortcutPanel() {
             Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .background(Color.White)
-                .padding(horizontal = 20.dp, vertical = 20.dp),
+                .padding(horizontal = 20.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        ShortcutItem("月卡", Icons.Filled.CreditCard, Color(0xFFFF45AF), Color(0xFF7F5BFF))
-        ShortcutItem("VIP", Icons.Filled.WorkspacePremium, Color(0xFFFFC629), Color(0xFFFFE77A))
-        ShortcutItem("充值", Icons.Filled.Paid, Color(0xFFFFD33E), Color(0xFFF0A50D))
-        ShortcutItem("订阅", Icons.Filled.Diamond, Color(0xFFFF34B5), Color(0xFFFF8FD9))
-        ShortcutItem("礼包", Icons.Filled.Redeem, Color(0xFFFFC032), Color(0xFFFF4FB0))
+        ShortcutItem("月卡", Icons.Filled.CreditCard, Color(0xFFFF45AF))
+        ShortcutItem("VIP", Icons.Filled.WorkspacePremium, Color(0xFFFFC629))
+        ShortcutItem("充值", Icons.Filled.Paid, Color(0xFFFFD33E))
+        ShortcutItem("订阅", Icons.Filled.Favorite, Color(0xFFFF34B5))
+        ShortcutItem("礼包", Icons.Filled.Redeem, Color(0xFFFFC032))
     }
 }
 
 @Composable
-private fun ShortcutItem(label: String, icon: ImageVector, colorA: Color, colorB: Color) {
+private fun ShortcutItem(label: String, icon: ImageVector, iconColor: Color) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -213,13 +219,14 @@ private fun ShortcutItem(label: String, icon: ImageVector, colorA: Color, colorB
         Icon(
             imageVector = icon,
             contentDescription = label,
-            modifier = Modifier.size(42.dp),
-            tint = colorA,
+            modifier = Modifier.size(37.dp),
+            tint = iconColor,
         )
         Text(
             label,
             color = Color(0xFF424242),
-            style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp,
+            lineHeight = 22.sp,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -249,12 +256,12 @@ private fun SettingsPanel() {
 @Composable
 private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot: Boolean = false) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(82.dp).padding(horizontal = 34.dp),
+        modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 34.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, contentDescription = label, modifier = Modifier.size(34.dp), tint = iconColor)
+        Icon(icon, contentDescription = label, modifier = Modifier.size(32.dp), tint = iconColor)
         Spacer(Modifier.width(34.dp))
-        Text(label, color = Color(0xFF55575C), style = MaterialTheme.typography.headlineSmall)
+        Text(label, color = Color(0xFF55575C), fontSize = 22.sp, lineHeight = 27.sp)
         if (showDot) {
             PinkDot(modifier = Modifier.padding(start = 4.dp))
         }
@@ -262,7 +269,7 @@ private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot
         Icon(
             Icons.Filled.ChevronRight,
             contentDescription = null,
-            modifier = Modifier.size(34.dp),
+            modifier = Modifier.size(32.dp),
             tint = Color(0xFFD2D2D2),
         )
     }
@@ -272,12 +279,12 @@ private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot
 private fun TinyCurrency(icon: ImageVector, colorA: Color, colorB: Color) {
     Box(
         modifier =
-            Modifier.size(30.dp)
+            Modifier.size(27.dp)
                 .clip(RoundedCornerShape(6.dp))
                 .background(Brush.linearGradient(listOf(colorA, colorB))),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, contentDescription = null, modifier = Modifier.size(20.dp), tint = Color.White)
+        Icon(icon, contentDescription = null, modifier = Modifier.size(18.dp), tint = Color.White)
     }
 }
 
