@@ -6,6 +6,8 @@ config:
   warningsAsErrors: false
 
 complexity:
+  CyclomaticComplexMethod:
+    active: false
   LongMethod:
     active: false
   LongParameterList:
@@ -23,7 +25,11 @@ style:
   MagicNumber:
     active: false
   MaxLineLength:
-    active: true
-    maxLineLength: 140
+    active: false
   NewLineAtEndOfFile:
     active: true
+  UnusedPrivateMember:
+    ignoreAnnotated:
+      - Preview
+  WildcardImport:
+    active: false
