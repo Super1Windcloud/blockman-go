@@ -35,7 +35,18 @@ android {
     }
     kotlinOptions { jvmTarget = "11" }
     buildFeatures { compose = true }
+    sourceSets {
+        getByName("main").assets.srcDir(layout.buildDirectory.dir("generated/modelAssets"))
+    }
 }
+
+val syncRootModelsToAssets by
+    tasks.registering(org.gradle.api.tasks.Sync::class) {
+        from(rootProject.layout.projectDirectory.dir("models"))
+        into(layout.buildDirectory.dir("generated/modelAssets/models"))
+    }
+
+tasks.named("preBuild") { dependsOn(syncRootModelsToAssets) }
 
 ktfmt { kotlinLangStyle() }
 
@@ -55,6 +66,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("io.github.sceneview:sceneview:2.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")

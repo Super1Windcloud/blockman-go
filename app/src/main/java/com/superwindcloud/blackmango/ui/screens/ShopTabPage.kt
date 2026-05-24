@@ -31,24 +31,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.github.sceneview.Scene
+import io.github.sceneview.node.ModelNode
+import io.github.sceneview.rememberEngine
+import io.github.sceneview.rememberModelLoader
 
 private val shopCategories = listOf("推荐", "服饰", "配饰", "人物", "脸部")
 private val shopFilters = listOf("推荐物品", "新品上架")
+private val modelPreviewBackground = Color(0xFFE8E4FF)
 
 private val shopItems =
     listOf(
@@ -80,9 +83,9 @@ private fun AvatarPreview(modifier: Modifier = Modifier) {
         modifier =
             modifier.background(
                 Brush.verticalGradient(
-                    0f to Color(0xFFE5E2FF),
-                    0.78f to Color(0xFFE7E5FF),
-                    1f to Color(0xFFDCD8FF),
+                    0f to Color(0xFFECE9FF),
+                    0.72f to modelPreviewBackground,
+                    1f to Color(0xFFDDD8FF),
                 )
             )
     ) {
@@ -97,9 +100,7 @@ private fun AvatarPreview(modifier: Modifier = Modifier) {
             modifier = Modifier.align(Alignment.TopStart).padding(start = 18.dp, top = 86.dp)
         )
         PetBadge(modifier = Modifier.align(Alignment.TopEnd).padding(end = 28.dp, top = 18.dp))
-        BlockAvatar(
-            modifier = Modifier.align(Alignment.Center).fillMaxHeight(0.82f).aspectRatio(0.56f)
-        )
+        BlockmanModelPreview(modifier = Modifier.align(Alignment.Center).fillMaxSize())
         Column(
             modifier = Modifier.align(Alignment.CenterEnd).padding(end = 22.dp),
             verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -215,156 +216,40 @@ private fun PetBadge(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BlockAvatar(modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier) {
-        val w = size.width
-        val h = size.height
-        drawOval(
-            Color(0x33000000),
-            topLeft = Offset(w * 0.06f, h * 0.9f),
-            size = Size(w * 0.88f, h * 0.08f),
-        )
-        drawArm(x = w * 0.02f, y = h * 0.38f, width = w * 0.22f, height = h * 0.36f)
-        drawArm(x = w * 0.76f, y = h * 0.38f, width = w * 0.22f, height = h * 0.36f)
-        drawRoundRect(
-            Color(0xFF5A4078),
-            topLeft = Offset(w * 0.22f, h * 0.34f),
-            size = Size(w * 0.56f, h * 0.33f),
-            cornerRadius = CornerRadius(4f, 4f),
-        )
-        drawRect(
-            Color(0xFF543770),
-            topLeft = Offset(w * 0.22f, h * 0.35f),
-            size = Size(w * 0.22f, h * 0.31f),
-        )
-        drawShirtMark(w, h)
-        drawLeg(x = w * 0.26f, y = h * 0.66f, width = w * 0.22f, height = h * 0.24f, footLean = -1f)
-        drawLeg(x = w * 0.52f, y = h * 0.66f, width = w * 0.22f, height = h * 0.24f, footLean = 1f)
-        drawBelt(w, h)
-        drawRoundRect(
-            Color(0xFFFFD7BE),
-            topLeft = Offset(w * 0.32f, h * 0.13f),
-            size = Size(w * 0.38f, h * 0.24f),
-            cornerRadius = CornerRadius(8f, 8f),
-        )
-        drawHair(w, h)
-        drawFace(w, h)
-    }
-}
-
-private fun DrawScope.drawArm(x: Float, y: Float, width: Float, height: Float) {
-    drawRect(
-        Color(0xFFFFD7BE),
-        topLeft = Offset(x, y + height * 0.18f),
-        size = Size(width, height * 0.76f),
-    )
-    drawRect(Color(0xFF5A4078), topLeft = Offset(x, y), size = Size(width, height * 0.24f))
-}
-
-private fun DrawScope.drawLeg(x: Float, y: Float, width: Float, height: Float, footLean: Float) {
-    drawRect(Color(0xFF6BA0A2), topLeft = Offset(x, y), size = Size(width, height))
-    drawRect(
-        Color(0xFF1380A0),
-        topLeft = Offset(x, y + height * 0.75f),
-        size = Size(width, height * 0.18f),
-    )
-    val shoe =
-        Path().apply {
-            moveTo(x, y + height * 0.88f)
-            lineTo(x + width, y + height * 0.88f)
-            lineTo(x + width + footLean * width * 0.14f, y + height)
-            lineTo(x + footLean * width * 0.07f, y + height)
-            close()
+private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.background(modelPreviewBackground),
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(modifier = Modifier.fillMaxHeight(0.92f).fillMaxWidth(0.64f)) {
+            Canvas(modifier = Modifier.matchParentSize()) {
+                drawOval(
+                    Color(0x33000000),
+                    topLeft = Offset(size.width * 0.08f, size.height * 0.88f),
+                    size = Size(size.width * 0.84f, size.height * 0.08f),
+                )
+            }
         }
-    drawPath(shoe, Color(0xFF0C7B96))
-    drawLine(
-        Color.White,
-        Offset(x + width * 0.12f, y + height * 0.96f),
-        Offset(x + width * 0.88f, y + height * 0.96f),
-        strokeWidth = 4f,
-    )
-}
-
-private fun DrawScope.drawBelt(w: Float, h: Float) {
-    drawRect(
-        Color(0xFF1687C2),
-        topLeft = Offset(w * 0.25f, h * 0.64f),
-        size = Size(w * 0.5f, h * 0.035f),
-    )
-    drawRoundRect(
-        Color.White,
-        topLeft = Offset(w * 0.45f, h * 0.642f),
-        size = Size(w * 0.1f, h * 0.03f),
-        cornerRadius = CornerRadius(4f, 4f),
-    )
-}
-
-private fun DrawScope.drawHair(w: Float, h: Float) {
-    drawRect(
-        Color(0xFFE5B600),
-        topLeft = Offset(w * 0.29f, h * 0.1f),
-        size = Size(w * 0.46f, h * 0.08f),
-    )
-    listOf(
-            Rect(w * 0.25f, h * 0.14f, w * 0.38f, h * 0.26f),
-            Rect(w * 0.36f, h * 0.08f, w * 0.5f, h * 0.16f),
-            Rect(w * 0.5f, h * 0.08f, w * 0.72f, h * 0.17f),
-            Rect(w * 0.64f, h * 0.16f, w * 0.77f, h * 0.28f),
+        val engine = rememberEngine()
+        val modelLoader = rememberModelLoader(engine)
+        val modelNode =
+            remember(modelLoader) {
+                ModelNode(
+                    modelInstance =
+                        modelLoader.createModelInstance(
+                            assetFileLocation = "models/blockman_go_player_model_textured.glb"
+                        ),
+                    scaleToUnits = 3.1f,
+                )
+            }
+        Scene(
+            modifier = Modifier.fillMaxHeight(0.96f).fillMaxWidth(0.68f),
+            engine = engine,
+            modelLoader = modelLoader,
+            isOpaque = false,
+            childNodes = listOf(modelNode),
         )
-        .forEach { rect -> drawOval(Color(0xFFE8BD05), topLeft = rect.topLeft, size = rect.size) }
-}
-
-private fun DrawScope.drawFace(w: Float, h: Float) {
-    drawRect(
-        Color(0xFF5D3A10),
-        topLeft = Offset(w * 0.37f, h * 0.23f),
-        size = Size(w * 0.11f, h * 0.035f),
-    )
-    drawRect(
-        Color(0xFF5D3A10),
-        topLeft = Offset(w * 0.55f, h * 0.22f),
-        size = Size(w * 0.12f, h * 0.035f),
-    )
-    drawRect(Color.White, topLeft = Offset(w * 0.39f, h * 0.27f), size = Size(w * 0.09f, h * 0.05f))
-    drawRect(Color.White, topLeft = Offset(w * 0.56f, h * 0.27f), size = Size(w * 0.09f, h * 0.05f))
-    drawCircle(Color(0xFF244566), radius = w * 0.018f, center = Offset(w * 0.44f, h * 0.295f))
-    drawCircle(Color(0xFF244566), radius = w * 0.018f, center = Offset(w * 0.6f, h * 0.295f))
-    drawOval(
-        Color(0x44FF7A62),
-        topLeft = Offset(w * 0.44f, h * 0.33f),
-        size = Size(w * 0.18f, h * 0.045f),
-    )
-    drawRect(
-        Color(0xFFE51E32),
-        topLeft = Offset(w * 0.46f, h * 0.36f),
-        size = Size(w * 0.2f, h * 0.018f),
-    )
-    drawRect(
-        Color.White,
-        topLeft = Offset(w * 0.47f, h * 0.36f),
-        size = Size(w * 0.17f, h * 0.007f),
-    )
-}
-
-private fun DrawScope.drawShirtMark(w: Float, h: Float) {
-    drawLine(
-        Color.White,
-        Offset(w * 0.46f, h * 0.43f),
-        Offset(w * 0.62f, h * 0.42f),
-        strokeWidth = 8f,
-    )
-    drawLine(
-        Color.White,
-        Offset(w * 0.5f, h * 0.48f),
-        Offset(w * 0.64f, h * 0.55f),
-        strokeWidth = 7f,
-    )
-    drawLine(
-        Color.White,
-        Offset(w * 0.58f, h * 0.42f),
-        Offset(w * 0.56f, h * 0.59f),
-        strokeWidth = 6f,
-    )
+    }
 }
 
 @Composable
