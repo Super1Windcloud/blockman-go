@@ -222,7 +222,7 @@ private fun ShortcutPanel() {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .background(Color.White)
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(horizontal = 12.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         ShortcutItem("月卡", Icons.Filled.CreditCard, Color(0xFFFF45AF))
@@ -237,12 +237,12 @@ private fun ShortcutPanel() {
 private fun ShortcutItem(label: String, icon: ImageVector, iconColor: Color) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            modifier = Modifier.size(37.dp),
+            modifier = Modifier.size(30.dp),
             tint = iconColor,
         )
         Text(
@@ -263,7 +263,7 @@ private fun SettingsPanel() {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                 .background(Color.White)
-                .padding(top = 8.dp)
+                .padding(top = 2.dp)
     ) {
         MenuItem("活动中心", Icons.Filled.Flag, Color(0xFFF24F6D))
         MenuItem("背包", Icons.Filled.ShoppingBag, Color(0xFFFF864B))
@@ -282,12 +282,12 @@ private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
-            .padding(horizontal = 34.dp),
+            .height(52.dp)
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, contentDescription = label, modifier = Modifier.size(32.dp), tint = iconColor)
-        Spacer(Modifier.width(34.dp))
+        Icon(icon, contentDescription = label, modifier = Modifier.size(26.dp), tint = iconColor)
+        Spacer(Modifier.width(24.dp))
         Text(label, color = Color(0xFF55575C), fontSize = 15.sp, lineHeight = 19.sp)
         if (showDot) {
             PinkDot(modifier = Modifier.padding(start = 4.dp))
@@ -296,7 +296,7 @@ private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot
         Icon(
             Icons.Filled.ChevronRight,
             contentDescription = null,
-            modifier = Modifier.size(32.dp),
+            modifier = Modifier.size(26.dp),
             tint = Color(0xFFD2D2D2),
         )
     }
