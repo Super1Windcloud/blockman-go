@@ -2,6 +2,7 @@ package com.superwindcloud.blackmango.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,11 +17,11 @@ import com.superwindcloud.blackmango.ui.navigation.ScreenBackground
 
 @Composable
 fun BlackMangoApp() {
-    var selectedTab by rememberSaveable { mutableStateOf(MainTab.Profile) }
+    var selectedTab by rememberSaveable { mutableStateOf(MainTab.Home) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = ScreenBackground) {
         Box(Modifier.fillMaxSize()) {
-            ActiveTabPage(selectedTab)
+            ActiveTabPage(selectedTab, modifier = Modifier.fillMaxSize().statusBarsPadding())
             BottomTabHitLayer(
                 selectedTab = selectedTab,
                 onTabSelected = { selectedTab = it },
@@ -31,12 +32,12 @@ fun BlackMangoApp() {
 }
 
 @Composable
-private fun ActiveTabPage(selectedTab: MainTab) {
+private fun ActiveTabPage(selectedTab: MainTab, modifier: Modifier = Modifier) {
     when (selectedTab) {
-        MainTab.Home -> HomeTabPage()
-        MainTab.Rooms -> RoomsTabPage()
-        MainTab.Shop -> ShopTabPage()
-        MainTab.Social -> SocialTabPage()
-        MainTab.Profile -> ProfileTabPage()
+        MainTab.Home -> HomeTabPage(modifier)
+        MainTab.Rooms -> RoomsTabPage(modifier)
+        MainTab.Shop -> ShopTabPage(modifier)
+        MainTab.Social -> SocialTabPage(modifier)
+        MainTab.Profile -> ProfileTabPage(modifier)
     }
 }
