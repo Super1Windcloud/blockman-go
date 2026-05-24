@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "blackmango"
+rootProject.name = "blockmango"
 include(":app")
  

@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.ncorti.ktfmt.gradle")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -34,6 +36,16 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+ktfmt {
+    kotlinLangStyle()
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config.setFrom(rootProject.files("config/detekt/detekt.yml"))
 }
 
 dependencies {
