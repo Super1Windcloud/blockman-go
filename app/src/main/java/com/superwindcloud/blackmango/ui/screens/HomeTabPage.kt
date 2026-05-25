@@ -298,18 +298,18 @@ private fun PromoStrip(onNavigate: (String) -> Unit) {
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Black,
             )
-            Box(
-                modifier =
-                    Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = 0.dp, end = 2.dp)
-                        .size(12.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFFF3E70)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text("!", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Black)
-            }
+//            Box(
+//                modifier =
+//                    Modifier
+//                        .align(Alignment.TopEnd)
+//                        .padding(top = 0.dp, end = 2.dp)
+//                        .size(12.dp)
+//                        .clip(CircleShape)
+//                        .background(Color(0xFFFF3E70)),
+//                contentAlignment = Alignment.Center,
+//            ) {
+//                Text("!", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Black)
+//            }
         }
     }
 }
