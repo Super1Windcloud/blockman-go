@@ -136,7 +136,9 @@ private val homeCardSections =
 @Composable
 fun HomeTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}) {
     LazyColumn(
-        modifier = modifier.fillMaxSize().background(ScreenBackground),
+        modifier = modifier
+            .fillMaxSize()
+            .background(ScreenBackground),
         contentPadding = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 92.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
@@ -158,7 +160,9 @@ fun HomeTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}
 private fun HomeTopBar(onNavigate: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(22.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CurrencyPill(
@@ -179,14 +183,18 @@ private fun HomeTopBar(onNavigate: (String) -> Unit) {
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color(0xFF8B34E8),
-                modifier = Modifier.size(24.dp).clickable { onNavigate("搜索") },
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onNavigate("搜索") },
             )
             Spacer(Modifier.width(24.dp))
             Icon(
                 imageVector = Icons.Filled.Notifications,
                 contentDescription = null,
                 tint = Color(0xFFFF8C6B),
-                modifier = Modifier.size(24.dp).clickable { onNavigate("通知") },
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onNavigate("通知") },
             )
         }
     }
@@ -196,7 +204,8 @@ private fun HomeTopBar(onNavigate: (String) -> Unit) {
 private fun CurrencyPill(icon: ImageVector, tint: Color, onClick: () -> Unit) {
     Row(
         modifier =
-            Modifier.height(24.dp)
+            Modifier
+                .height(24.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color(0xFFD1D1D5))
                 .clickable(onClick = onClick)
@@ -207,7 +216,10 @@ private fun CurrencyPill(icon: ImageVector, tint: Color, onClick: () -> Unit) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(14.dp))
         Text("0", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Black)
         Box(
-            modifier = Modifier.size(24.dp).clip(CircleShape).background(Color(0xFF7F35EA)),
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF7F35EA)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
@@ -223,7 +235,9 @@ private fun CurrencyPill(icon: ImageVector, tint: Color, onClick: () -> Unit) {
 @Composable
 private fun AlertGlyph(onClick: () -> Unit) {
     Box(
-        modifier = Modifier.size(24.dp).clickable(onClick = onClick),
+        modifier = Modifier
+            .size(24.dp)
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -250,8 +264,9 @@ private fun PromoStrip(onNavigate: (String) -> Unit) {
         ShortcutTile(title = "S9", icon = Icons.Filled.Star, onClick = { onNavigate("S9") })
         Box(
             modifier =
-                Modifier.weight(1f)
-                    .height(82.dp)
+                Modifier
+                    .weight(1f)
+                    .height(72.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFF356FAE))
                     .clickable { onNavigate("累计充值") }
@@ -264,7 +279,8 @@ private fun PromoStrip(onNavigate: (String) -> Unit) {
             )
             Box(
                 modifier =
-                    Modifier.matchParentSize()
+                    Modifier
+                        .matchParentSize()
                         .background(
                             Brush.horizontalGradient(
                                 0f to Color(0xCC2D160A),
@@ -275,21 +291,24 @@ private fun PromoStrip(onNavigate: (String) -> Unit) {
             )
             Text(
                 "累计充值",
-                modifier = Modifier.align(Alignment.CenterStart).padding(start = 22.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 22.dp),
                 color = Color.White,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Black,
             )
             Box(
                 modifier =
-                    Modifier.align(Alignment.TopEnd)
+                    Modifier
+                        .align(Alignment.TopEnd)
                         .padding(top = 0.dp, end = 2.dp)
-                        .size(26.dp)
+                        .size(12.dp)
                         .clip(CircleShape)
                         .background(Color(0xFFFF3E70)),
                 contentAlignment = Alignment.Center,
             ) {
-                Text("!", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
+                Text("!", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Black)
             }
         }
     }
@@ -299,7 +318,8 @@ private fun PromoStrip(onNavigate: (String) -> Unit) {
 private fun ShortcutTile(title: String, icon: ImageVector, onClick: () -> Unit) {
     Box(
         modifier =
-            Modifier.size(72.dp)
+            Modifier
+                .size(72.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     Brush.verticalGradient(
@@ -319,11 +339,15 @@ private fun ShortcutTile(title: String, icon: ImageVector, onClick: () -> Unit) 
             icon,
             contentDescription = null,
             tint = Color.White.copy(alpha = 0.9f),
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 9.dp).size(32.dp),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 9.dp)
+                .size(32.dp),
         )
         Box(
             modifier =
-                Modifier.align(Alignment.TopEnd)
+                Modifier
+                    .align(Alignment.TopEnd)
                     .offset(x = 10.dp, y = (-10).dp)
                     .size(24.dp)
                     .clip(CircleShape)
@@ -345,7 +369,9 @@ private fun LazyListScope.homeGameSection(
     item {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -359,7 +385,9 @@ private fun LazyListScope.homeGameSection(
                     Icons.Filled.ChevronRight,
                     contentDescription = null,
                     tint = Color(0xFFB7B7B9),
-                    modifier = Modifier.size(38.dp).clickable { onNavigate(title) },
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clickable { onNavigate(title) },
                 )
             }
 
@@ -406,7 +434,8 @@ private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier, onClic
     ) {
         Box(
             modifier =
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(9.dp))
                     .background(Color.White)
