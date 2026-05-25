@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 plugins {
     id("com.android.application")
@@ -36,6 +37,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures { compose = true }
+    applicationVariants.all {
+        outputs.all {
+            (this as BaseVariantOutputImpl).outputFileName = "blockmango-${buildType.name}.apk"
+        }
+    }
     sourceSets {
         getByName("main").assets.srcDir(layout.buildDirectory.dir("generated/modelAssets"))
     }
