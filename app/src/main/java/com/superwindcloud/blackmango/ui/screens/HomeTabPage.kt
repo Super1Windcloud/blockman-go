@@ -344,18 +344,18 @@ private fun ShortcutTile(title: String, icon: ImageVector, onClick: () -> Unit) 
                 .padding(bottom = 9.dp)
                 .size(32.dp),
         )
-        Box(
-            modifier =
-                Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = 10.dp, y = (-10).dp)
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFFF3E70)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text("!", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
-        }
+//        Box(
+//            modifier =
+//                Modifier
+//                    .align(Alignment.TopEnd)
+//                    .offset(x = 10.dp, y = (-10).dp)
+//                    .size(24.dp)
+//                    .clip(CircleShape)
+//                    .background(Color(0xFFFF3E70)),
+//            contentAlignment = Alignment.Center,
+//        ) {
+//            Text("!", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+//        }
     }
 }
 
