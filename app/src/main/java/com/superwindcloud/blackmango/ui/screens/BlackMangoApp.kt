@@ -21,7 +21,15 @@ fun BlackMangoApp() {
 
     Surface(modifier = Modifier.fillMaxSize(), color = ScreenBackground) {
         Box(Modifier.fillMaxSize()) {
-            ActiveTabPage(selectedTab, modifier = Modifier.fillMaxSize().statusBarsPadding())
+            ActiveTabPage(
+                selectedTab,
+                modifier =
+                    if (selectedTab == MainTab.Shop) {
+                        Modifier.fillMaxSize()
+                    } else {
+                        Modifier.fillMaxSize().statusBarsPadding()
+                    },
+            )
             BottomTabHitLayer(
                 selectedTab = selectedTab,
                 onTabSelected = { selectedTab = it },
