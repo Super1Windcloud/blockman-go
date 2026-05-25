@@ -221,7 +221,7 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
         modifier = modifier.background(modelPreviewBackground),
         contentAlignment = Alignment.Center,
     ) {
-        Box(modifier = Modifier.fillMaxHeight(0.92f).fillMaxWidth(0.64f)) {
+        Box(modifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f)) {
             Canvas(modifier = Modifier.matchParentSize()) {
                 drawOval(
                     Color(0x33000000),
@@ -239,11 +239,11 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
                         modelLoader.createModelInstance(
                             assetFileLocation = "models/blockman_go_player_model_textured.glb"
                         ),
-                    scaleToUnits = 3.1f,
+                    scaleToUnits = 2.15f,
                 )
             }
         Scene(
-            modifier = Modifier.fillMaxHeight(0.96f).fillMaxWidth(0.68f),
+            modifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f),
             engine = engine,
             modelLoader = modelLoader,
             isOpaque = false,

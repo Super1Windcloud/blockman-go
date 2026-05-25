@@ -73,36 +73,23 @@ fun ProfileTabPage(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ProfileHero() {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-    ) {
+    Box(Modifier.fillMaxWidth().height(150.dp)) {
         Icon(
             imageVector = Icons.Filled.ManageAccounts,
             contentDescription = "编辑资料",
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .size(31.dp),
+            modifier = Modifier.align(Alignment.TopEnd).size(31.dp),
             tint = Color(0xFF15191F),
         )
-        PinkDot(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 1.dp, end = 1.dp)
-        )
+        PinkDot(modifier = Modifier.align(Alignment.TopEnd).padding(top = 1.dp, end = 1.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 48.dp, end = 44.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, top = 48.dp, end = 44.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(R.drawable.profile_avatar),
                 contentDescription = "用户头像",
                 modifier =
-                    Modifier
-                        .size(88.dp)
+                    Modifier.size(88.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .border(4.dp, Color(0xFFDAB176), RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
@@ -136,12 +123,7 @@ private fun ProfileHero() {
                         fontSize = 19.sp,
                         lineHeight = 23.sp,
                     )
-                    Box(
-                        Modifier
-                            .height(28.dp)
-                            .width(1.dp)
-                            .background(Color(0xFFD6D6D8))
-                    )
+                    Box(Modifier.height(28.dp).width(1.dp).background(Color(0xFFD6D6D8)))
                     TinyCurrency(Icons.Filled.ViewInAr, Color(0xFFFFD548), Color(0xFF9B7419))
                     Text(
                         "0",
@@ -160,8 +142,7 @@ private fun ProfileHero() {
 private fun VipBadge() {
     Box(
         modifier =
-            Modifier
-                .width(58.dp)
+            Modifier.width(58.dp)
                 .height(24.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Brush.horizontalGradient(listOf(Color(0xFFEFF7FF), Color(0xFFBBC9D5))))
@@ -182,8 +163,7 @@ private fun VipBadge() {
 private fun GuestNotice() {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
+            Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(22.dp))
                 .background(Color(0xFFECE8FF))
                 .padding(start = 28.dp, top = 25.dp, end = 22.dp, bottom = 25.dp),
@@ -201,8 +181,7 @@ private fun GuestNotice() {
             Text("立刻注册", color = Color(0xFF8D62EA), fontSize = 12.sp, lineHeight = 15.sp)
             Box(
                 modifier =
-                    Modifier
-                        .padding(start = 2.dp)
+                    Modifier.padding(start = 2.dp)
                         .size(20.dp)
                         .clip(CircleShape)
                         .background(Color(0xFFDAD0FF)),
@@ -218,8 +197,7 @@ private fun GuestNotice() {
 private fun ShortcutPanel() {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
+            Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(14.dp))
                 .background(Color.White)
                 .padding(horizontal = 12.dp, vertical = 10.dp),
@@ -259,8 +237,7 @@ private fun ShortcutItem(label: String, icon: ImageVector, iconColor: Color) {
 private fun SettingsPanel() {
     Column(
         modifier =
-            Modifier
-                .fillMaxWidth()
+            Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                 .background(Color.White)
                 .padding(top = 2.dp)
@@ -280,10 +257,7 @@ private fun SettingsPanel() {
 @Composable
 private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot: Boolean = false) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .padding(horizontal = 24.dp),
+        modifier = Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(icon, contentDescription = label, modifier = Modifier.size(26.dp), tint = iconColor)
@@ -306,8 +280,7 @@ private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot
 private fun TinyCurrency(icon: ImageVector, colorA: Color, colorB: Color) {
     Box(
         modifier =
-            Modifier
-                .size(27.dp)
+            Modifier.size(27.dp)
                 .clip(RoundedCornerShape(6.dp))
                 .background(Brush.linearGradient(listOf(colorA, colorB))),
         contentAlignment = Alignment.Center,
@@ -318,10 +291,5 @@ private fun TinyCurrency(icon: ImageVector, colorA: Color, colorB: Color) {
 
 @Composable
 private fun PinkDot(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .size(14.dp)
-            .clip(CircleShape)
-            .background(Color(0xFFFF2C93))
-    )
+    Box(modifier = modifier.size(14.dp).clip(CircleShape).background(Color(0xFFFF2C93)))
 }
