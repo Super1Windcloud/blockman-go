@@ -91,29 +91,29 @@ private fun AvatarPreview(modifier: Modifier = Modifier) {
             )
     ) {
         Row(
-            modifier = Modifier.align(Alignment.TopStart).padding(start = 16.dp, top = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 14.dp, top = 14.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             CurrencyPill(symbol = "🎟", amount = "0")
             CurrencyPill(symbol = "▣", amount = "0")
         }
         AtlasButton(
-            modifier = Modifier.align(Alignment.TopStart).padding(start = 18.dp, top = 86.dp)
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 16.dp, top = 72.dp)
         )
-        PetBadge(modifier = Modifier.align(Alignment.TopEnd).padding(end = 28.dp, top = 18.dp))
+        PetBadge(modifier = Modifier.align(Alignment.TopEnd).padding(end = 18.dp, top = 14.dp))
         BlockmanModelPreview(modifier = Modifier.align(Alignment.Center).fillMaxSize())
         Column(
-            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 22.dp),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
+            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             RoundIconButton(Icons.Rounded.Expand)
             RoundIconButton(Icons.Rounded.Cached)
         }
         CartPill(
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 14.dp, bottom = 16.dp)
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp)
         )
         WardrobeToggle(
-            modifier = Modifier.align(Alignment.BottomStart).padding(start = 14.dp, bottom = 16.dp)
+            modifier = Modifier.align(Alignment.BottomStart).padding(start = 12.dp, bottom = 14.dp)
         )
     }
 }
@@ -122,25 +122,30 @@ private fun AvatarPreview(modifier: Modifier = Modifier) {
 private fun CurrencyPill(symbol: String, amount: String) {
     Row(
         modifier =
-            Modifier.height(30.dp)
+            Modifier.height(28.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(Color(0x88959AA5))
-                .padding(start = 8.dp),
+                .padding(start = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(symbol, style = MaterialTheme.typography.titleSmall)
         Text(
             amount,
-            modifier = Modifier.padding(horizontal = 12.dp),
+            modifier = Modifier.padding(horizontal = 9.dp),
             color = Color.White,
             fontWeight = FontWeight.Black,
             style = MaterialTheme.typography.titleMedium,
         )
         Box(
-            modifier = Modifier.size(32.dp).clip(CircleShape).background(Color(0xFF7D39F6)),
+            modifier = Modifier.size(28.dp).clip(CircleShape).background(Color(0xFF7D39F6)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Rounded.Add, contentDescription = null, tint = Color.White)
+            Icon(
+                Icons.Rounded.Add,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(18.dp),
+            )
         }
     }
 }
@@ -150,28 +155,28 @@ private fun AtlasButton(modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier =
-                Modifier.size(54.dp).clip(RoundedCornerShape(14.dp)).background(Color(0x99888A92)),
+                Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)).background(Color(0x99888A92)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 Icons.Rounded.Category,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(34.dp),
+                modifier = Modifier.size(26.dp),
             )
         }
         Text(
             "图鉴",
             color = Color.White,
             fontWeight = FontWeight.Black,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
         )
     }
 }
 
 @Composable
 private fun PetBadge(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.size(64.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.size(52.dp), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawOval(
                 Color(0x993BE9FF),
@@ -198,20 +203,20 @@ private fun PetBadge(modifier: Modifier = Modifier) {
                 Color(0xFF19DBF2),
                 Offset(size.width * 0.22f, size.height * 0.2f),
                 Offset(size.width * 0.16f, size.height * 0.02f),
-                strokeWidth = 5f,
+                strokeWidth = 4f,
             )
             drawLine(
                 Color(0xFF19DBF2),
                 Offset(size.width * 0.75f, size.height * 0.2f),
                 Offset(size.width * 0.86f, size.height * 0.02f),
-                strokeWidth = 5f,
+                strokeWidth = 4f,
             )
         }
         Icon(
             Icons.Rounded.Pets,
             contentDescription = null,
             tint = Color(0xFF10131B),
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(20.dp),
         )
     }
 }
@@ -275,13 +280,11 @@ private class HorizontalOnlyCameraManipulator(
         isPanning = false
     }
 
-    override fun scrollBegin(x: Int, y: Int, separation: Float) =
-        delegate.scrollBegin(x, y, separation)
+    override fun scrollBegin(x: Int, y: Int, separation: Float) = Unit
 
-    override fun scrollUpdate(x: Int, y: Int, prevSeparation: Float, currSeparation: Float) =
-        delegate.scrollUpdate(x, y, prevSeparation, currSeparation)
+    override fun scrollUpdate(x: Int, y: Int, prevSeparation: Float, currSeparation: Float) = Unit
 
-    override fun scrollEnd() = delegate.scrollEnd()
+    override fun scrollEnd() = Unit
 
     override fun update(deltaTime: Float) = delegate.update(deltaTime)
 }
@@ -289,14 +292,14 @@ private class HorizontalOnlyCameraManipulator(
 @Composable
 private fun RoundIconButton(icon: ImageVector) {
     Box(
-        modifier = Modifier.size(58.dp).clip(CircleShape).background(Color.White),
+        modifier = Modifier.size(46.dp).clip(CircleShape).background(Color.White),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             icon,
             contentDescription = null,
             tint = Color(0xFF7E3FF3),
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(24.dp),
         )
     }
 }
@@ -306,15 +309,20 @@ private fun CartPill(modifier: Modifier = Modifier) {
     Row(
         modifier =
             modifier
-                .height(42.dp)
-                .width(112.dp)
+                .height(38.dp)
+                .width(96.dp)
                 .clip(RoundedCornerShape(14.dp))
                 .background(Color(0xB38754EA)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Icon(Icons.Rounded.ShoppingCart, contentDescription = null, tint = Color.White)
-        Spacer(Modifier.width(10.dp))
+        Icon(
+            Icons.Rounded.ShoppingCart,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(20.dp),
+        )
+        Spacer(Modifier.width(7.dp))
         Text(
             "0",
             color = Color.White,
@@ -329,8 +337,8 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
     Row(
         modifier =
             modifier
-                .height(44.dp)
-                .width(150.dp)
+                .height(40.dp)
+                .width(132.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(Color.White),
         verticalAlignment = Alignment.CenterVertically,
@@ -343,7 +351,12 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
                     .background(Color(0xFF7D39F6)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Rounded.Checkroom, contentDescription = null, tint = Color.White)
+            Icon(
+                Icons.Rounded.Checkroom,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(22.dp),
+            )
         }
         Text(
             "My",
@@ -351,7 +364,7 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
             color = Color(0xFF96979D),
             fontWeight = FontWeight.Black,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
         )
     }
 }
@@ -359,17 +372,17 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
 @Composable
 private fun WardrobePanel(modifier: Modifier = Modifier) {
     Column(modifier = modifier.background(Color(0xFFF2F2F5))) {
-        Box(modifier = Modifier.fillMaxWidth().height(18.dp), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxWidth().height(14.dp), contentAlignment = Alignment.Center) {
             Box(
                 modifier =
-                    Modifier.size(width = 54.dp, height = 7.dp)
+                    Modifier.size(width = 44.dp, height = 6.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color(0xFFD8D8DD))
             )
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(18.dp),
         ) {
             shopCategories.forEachIndexed { index, label ->
                 CategoryTab(label = label, selected = index == 0)
@@ -377,8 +390,8 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
         }
         Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xFFE0E0E6)))
         Row(
-            modifier = Modifier.padding(start = 16.dp, top = 10.dp, bottom = 10.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             shopFilters.forEachIndexed { index, label ->
@@ -393,12 +406,12 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
                     end = 16.dp,
                     bottom = 92.dp,
                 ),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             shopItems.chunked(4).forEach { rowItems ->
                 item {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(7.dp),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         rowItems.forEach { item ->
@@ -421,10 +434,10 @@ private fun CategoryTab(label: String, selected: Boolean) {
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
             style = MaterialTheme.typography.titleMedium,
         )
-        Spacer(Modifier.height(9.dp))
+        Spacer(Modifier.height(7.dp))
         Box(
             modifier =
-                Modifier.size(width = 36.dp, height = 3.dp)
+                Modifier.size(width = 30.dp, height = 3.dp)
                     .background(if (selected) Color(0xFF7D39F6) else Color.Transparent)
         )
     }
@@ -439,8 +452,8 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
                 if (selected)
                     Modifier.clip(RoundedCornerShape(8.dp))
                         .background(Color(0xFFE4E4EA))
-                        .padding(horizontal = 12.dp, vertical = 8.dp)
-                else Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                else Modifier.padding(horizontal = 4.dp, vertical = 6.dp),
             color = if (selected) Color(0xFF5D5E66) else Color(0xFFA2A2A8),
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
             style = MaterialTheme.typography.titleMedium,
@@ -449,7 +462,7 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
             Box(
                 modifier =
                     Modifier.align(Alignment.TopEnd)
-                        .size(9.dp)
+                        .size(7.dp)
                         .clip(CircleShape)
                         .background(Color(0xFFFF2A77))
             )
@@ -473,7 +486,7 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
                     .weight(1f)
                     .background(Brush.radialGradient(listOf(Color(0xFFFFE6FB), Color(0xFFFFA9ED))))
         ) {
-            Canvas(modifier = Modifier.align(Alignment.TopStart).padding(7.dp).size(24.dp)) {
+            Canvas(modifier = Modifier.align(Alignment.TopStart).padding(6.dp).size(20.dp)) {
                 drawCircle(
                     Brush.sweepGradient(
                         listOf(
@@ -492,8 +505,8 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
             Box(
                 modifier =
                     Modifier.align(Alignment.TopEnd)
-                        .padding(5.dp)
-                        .size(28.dp)
+                        .padding(4.dp)
+                        .size(24.dp)
                         .clip(CircleShape)
                         .background(Color(0xFFFF8A17)),
                 contentAlignment = Alignment.Center,
@@ -502,7 +515,7 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
                     Icons.Rounded.LocalFireDepartment,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(16.dp),
                 )
             }
             ShopItemArt(
@@ -512,7 +525,7 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
         }
         Row(
             modifier =
-                Modifier.fillMaxWidth().background(Color(0xFFFFE7F9)).padding(vertical = 6.dp),
+                Modifier.fillMaxWidth().background(Color(0xFFFFE7F9)).padding(vertical = 5.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {

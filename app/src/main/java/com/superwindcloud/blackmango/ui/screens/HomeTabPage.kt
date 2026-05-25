@@ -333,40 +333,46 @@ private fun LazyListScope.homeGameSection(
     horizontal: Boolean,
 ) {
     item {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(title, color = Color(0xFF171A20), fontSize = 17.sp, fontWeight = FontWeight.Black)
-            Spacer(Modifier.weight(1f))
-            Icon(
-                Icons.Filled.ChevronRight,
-                contentDescription = null,
-                tint = Color(0xFFB7B7B9),
-                modifier = Modifier.size(38.dp),
-            )
-        }
-    }
-    if (horizontal) {
-        item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                items(games.size) { index ->
-                    HomeGameCard(game = games[index], modifier = Modifier.width(104.dp))
-                }
-            }
-        }
-        return
-    }
-    games.chunked(columns).forEach { rowGames ->
-        item {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                rowGames.forEach { game ->
-                    HomeGameCard(game = game, modifier = Modifier.weight(1f))
+                Text(
+                    title,
+                    color = Color(0xFF171A20),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Black,
+                )
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    Icons.Filled.ChevronRight,
+                    contentDescription = null,
+                    tint = Color(0xFFB7B7B9),
+                    modifier = Modifier.size(38.dp),
+                )
+            }
+
+            if (horizontal) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    items(games.size) { index ->
+                        HomeGameCard(game = games[index], modifier = Modifier.width(104.dp))
+                    }
                 }
-                repeat(columns - rowGames.size) { Spacer(Modifier.weight(1f)) }
+            } else {
+                Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                    games.chunked(columns).forEach { rowGames ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            rowGames.forEach { game ->
+                                HomeGameCard(game = game, modifier = Modifier.weight(1f))
+                            }
+                            repeat(columns - rowGames.size) { Spacer(Modifier.weight(1f)) }
+                        }
+                    }
+                }
             }
         }
     }
@@ -374,6 +380,8 @@ private fun LazyListScope.homeGameSection(
 
 @Composable
 private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier) {
+    val playersText = game.players.withPlayerUnit()
+
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(7.dp)) {
         Box(
             modifier =
@@ -441,7 +449,7 @@ private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier) {
                 modifier = Modifier.size(17.dp),
             )
             Text(
-                game.players,
+                playersText,
                 color = Color(0xFF777A81),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
@@ -450,3 +458,6 @@ private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier) {
         }
     }
 }
+
+private fun String.withPlayerUnit(): String =
+    if (contains(".") && !endsWith("k", ignoreCase = true)) "${this}k" else this
