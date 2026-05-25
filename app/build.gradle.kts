@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -33,15 +35,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions { jvmTarget = "11" }
     buildFeatures { compose = true }
     sourceSets {
         getByName("main").assets.srcDir(layout.buildDirectory.dir("generated/modelAssets"))
     }
 }
 
+kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_11) } }
+
 val syncRootModelsToAssets by
-    tasks.registering(org.gradle.api.tasks.Sync::class) {
+    tasks.registering(Sync::class) {
         from(rootProject.layout.projectDirectory.dir("models"))
         into(layout.buildDirectory.dir("generated/modelAssets/models"))
     }
@@ -57,20 +60,20 @@ detekt {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-    implementation("androidx.activity:activity-compose:1.11.0")
-    implementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    implementation("androidx.core:core-ktx:1.18.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.activity:activity-compose:1.13.0")
+    implementation(platform("androidx.compose:compose-bom:2026.05.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("io.github.sceneview:sceneview:2.3.0")
+    implementation("io.github.sceneview:sceneview:4.15.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2026.05.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

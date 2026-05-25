@@ -26,7 +26,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.SignalCellularAlt
+import androidx.compose.material.icons.filled.SportsKabaddi
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -251,8 +257,8 @@ private fun RoomListCard(room: RoomCard) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RoomMeta(text = room.typeIcon, label = room.type)
-                        RoomMeta(text = "◉", label = room.language)
+                        RoomMeta(icon = room.typeIcon, label = room.type)
+                        RoomMeta(icon = Icons.Filled.Public, label = room.language)
                         Icon(
                             Icons.Filled.SignalCellularAlt,
                             contentDescription = "信号",
@@ -268,16 +274,16 @@ private fun RoomListCard(room: RoomCard) {
 }
 
 @Composable
-private fun RoomMeta(text: String, label: String) {
+private fun RoomMeta(icon: ImageVector, label: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(3.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = text,
-            color = Color(0xFF8A8D93),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Black,
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = Color(0xFF8A8D93),
+            modifier = Modifier.size(13.dp),
         )
         Text(
             text = label,
@@ -378,7 +384,7 @@ private data class RoomCard(
     @DrawableRes val avatarRes: Int,
     @DrawableRes val backgroundRes: Int,
     val type: String,
-    val typeIcon: String,
+    val typeIcon: ImageVector,
     val language: String,
     val current: Int,
     val total: Int = 24,
@@ -400,7 +406,7 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_dark_skin,
             backgroundRes = R.drawable.card_reco_sky_survival,
             type = "PVP",
-            typeIcon = "⚔",
+            typeIcon = Icons.Filled.SportsKabaddi,
             language = "Português",
             current = 22,
         ),
@@ -410,7 +416,7 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_blond_angry,
             backgroundRes = R.drawable.card_friends_school,
             type = "UGC",
-            typeIcon = "✥",
+            typeIcon = Icons.Filled.Extension,
             language = "English",
             current = 22,
         ),
@@ -420,7 +426,7 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_blond_portrait,
             backgroundRes = R.drawable.card_friends_school,
             type = "UGC",
-            typeIcon = "✥",
+            typeIcon = Icons.Filled.Extension,
             language = "English",
             current = 20,
         ),
@@ -430,7 +436,7 @@ private val roomCards =
             avatarRes = R.drawable.room_bg_poster,
             backgroundRes = R.drawable.card_classic_biohazard,
             type = "创造",
-            typeIcon = "◢",
+            typeIcon = Icons.Filled.Brush,
             language = "русский",
             current = 19,
         ),
@@ -440,7 +446,7 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_white_hair,
             backgroundRes = R.drawable.room_bg_sheep_square,
             type = "社交",
-            typeIcon = "☑",
+            typeIcon = Icons.Filled.CheckBox,
             language = "English",
             current = 18,
         ),
@@ -450,7 +456,7 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_girl_dark,
             backgroundRes = R.drawable.card_pvp_squad_battle,
             type = "PVP",
-            typeIcon = "⚔",
+            typeIcon = Icons.Filled.SportsKabaddi,
             language = "Український",
             current = 18,
         ),
@@ -460,9 +466,19 @@ private val roomCards =
             avatarRes = R.drawable.room_avatar_red_jacket,
             backgroundRes = R.drawable.room_bg_sheep,
             type = "社交",
-            typeIcon = "☑",
+            typeIcon = Icons.Filled.CheckBox,
             language = "English",
             current = 17,
+        ),
+        RoomCard(
+            title = "PKH 2019",
+            host = "tyduforgot",
+            avatarRes = R.drawable.room_avatar_red_jacket,
+            backgroundRes = R.drawable.room_bg_sheep,
+            type = "社交",
+            typeIcon = Icons.Filled.CheckBox,
+            language = "English",
+            current = 12,
         ),
     )
 

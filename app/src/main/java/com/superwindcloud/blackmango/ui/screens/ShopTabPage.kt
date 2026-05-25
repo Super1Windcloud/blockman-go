@@ -44,8 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.sceneview.Scene
-import io.github.sceneview.node.ModelNode
+import io.github.sceneview.SceneView
 import io.github.sceneview.rememberEngine
 import io.github.sceneview.rememberModelLoader
 
@@ -232,23 +231,20 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
         }
         val engine = rememberEngine()
         val modelLoader = rememberModelLoader(engine)
-        val modelNode =
+        val modelInstance =
             remember(modelLoader) {
-                ModelNode(
-                    modelInstance =
-                        modelLoader.createModelInstance(
-                            assetFileLocation = "models/blockman_go_player_model_textured.glb"
-                        ),
-                    scaleToUnits = 2.15f,
+                modelLoader.createModelInstance(
+                    assetFileLocation = "models/blockman_go_player_model_textured.glb"
                 )
             }
-        Scene(
+        SceneView(
             modifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f),
             engine = engine,
             modelLoader = modelLoader,
             isOpaque = false,
-            childNodes = listOf(modelNode),
-        )
+        ) {
+            ModelNode(modelInstance = modelInstance, scaleToUnits = 2.15f)
+        }
     }
 }
 
