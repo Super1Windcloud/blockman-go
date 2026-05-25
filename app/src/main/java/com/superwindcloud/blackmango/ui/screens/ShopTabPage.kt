@@ -264,7 +264,7 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
         modifier = modifier.background(modelPreviewBackground),
         contentAlignment = Alignment.Center,
     ) {
-        val modelViewportModifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f)
+        val modelViewportModifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(1f)
         val engine = rememberEngine()
         val modelLoader = rememberModelLoader(engine)
         val cameraManipulator = remember { HorizontalOnlyCameraManipulator() }

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -185,14 +186,14 @@ private fun HomeTopBar(onNavigate: (String) -> Unit) {
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color(0xFF8B34E8),
-                modifier = Modifier.size(21.dp).clickable { onNavigate("搜索") },
+                modifier = Modifier.size(24.dp).clickable { onNavigate("搜索") },
             )
             Spacer(Modifier.width(24.dp))
             Icon(
                 imageVector = Icons.Filled.Notifications,
                 contentDescription = null,
                 tint = Color(0xFFFF8C6B),
-                modifier = Modifier.size(18.dp).clickable { onNavigate("通知") },
+                modifier = Modifier.size(24.dp).clickable { onNavigate("通知") },
             )
         }
     }
@@ -232,17 +233,12 @@ private fun AlertGlyph(onClick: () -> Unit) {
         modifier = Modifier.size(24.dp).clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text("靓", color = Color(0xFFF2436F), fontSize = 8.sp, fontWeight = FontWeight.Bold)
-        Box(
-            modifier =
-                Modifier.align(Alignment.TopEnd)
-                    .size(11.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFFF3E70)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text("!", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Black)
-        }
+        Icon(
+            Icons.Filled.ConfirmationNumber,
+            contentDescription = null,
+            tint = Color(0xFFF2436F),
+            modifier = Modifier.size(23.dp),
+        )
     }
 }
 
@@ -458,34 +454,35 @@ private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier, onClic
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = null,
                 tint = Color(0xFFFF3E70),
-                modifier = Modifier.size(17.dp),
+                modifier = Modifier.size(14.dp),
             )
             Text(
                 game.score,
                 color = Color(0xFF777A81),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
+                lineHeight = 14.sp,
             )
-            Spacer(Modifier.width(6.dp))
             Icon(
                 Icons.Filled.Person,
                 contentDescription = null,
                 tint = Color(0xFF7D43E8),
-                modifier = Modifier.size(17.dp),
+                modifier = Modifier.size(14.dp),
             )
             Text(
                 playersText,
                 color = Color(0xFF777A81),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
+                lineHeight = 14.sp,
             )
         }
     }
