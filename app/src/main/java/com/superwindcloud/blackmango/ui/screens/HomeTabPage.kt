@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -58,25 +59,83 @@ private data class HomeGameUi(
     val checked: Boolean = false,
 )
 
-private val recommendedGames =
-    listOf(
-        HomeGameUi("起床战争", R.drawable.card_reco_bed_wars, "89%", "31.9k"),
-        HomeGameUi("空岛生存", R.drawable.card_reco_sky_survival, "85%", "17.8k"),
-        HomeGameUi("动漫格斗模拟器", R.drawable.card_reco_anime_fighter, "91%", "1557", true),
-        HomeGameUi("龙蛋领主", R.drawable.card_reco_dragon_egg, "91%", "1494"),
-        HomeGameUi("FREE CITY RP", R.drawable.card_shooter_crime_city, "91%", "12.6k", true),
-        HomeGameUi("警匪大战", R.drawable.card_reco_cops_robbers, "87%", "4396", true),
-        HomeGameUi("动漫对决", R.drawable.card_reco_anime_duel, "92%", "1955", true),
-        HomeGameUi("训练家联盟", R.drawable.card_rpg_island, "91%", "1566", true),
-        HomeGameUi("WWE学校模拟器", R.drawable.card_pvp_martial, "89%", "1221", true),
-    )
+private data class HomeCardSectionUi(val title: String, val games: List<HomeGameUi>)
 
-private val friendGames =
+private val homeCardSections =
     listOf(
-        HomeGameUi("交友大厅", R.drawable.card_friends_lobby, "90%", "9.8k"),
-        HomeGameUi("学校模拟器", R.drawable.card_friends_school, "88%", "7.6k", true),
-        HomeGameUi("天堂岛", R.drawable.card_friends_paradise, "91%", "6.8k"),
-        HomeGameUi("幸存者", R.drawable.card_new_survivor, "87%", "6.3k", true),
+        HomeCardSectionUi(
+            "推荐游戏",
+            listOf(
+                HomeGameUi("动漫对决", R.drawable.card_reco_anime_duel, "92%", "1955", true),
+                HomeGameUi("动漫格斗模拟器", R.drawable.card_reco_anime_fighter, "91%", "1557", true),
+                HomeGameUi("警匪大战", R.drawable.card_reco_cops_robbers, "87%", "4396", true),
+                HomeGameUi("空岛生存", R.drawable.card_reco_sky_survival, "85%", "17.8k"),
+                HomeGameUi("龙蛋领主", R.drawable.card_reco_dragon_egg, "91%", "1494"),
+                HomeGameUi("起床战争", R.drawable.card_reco_bed_wars, "89%", "31.9k"),
+            ),
+        ),
+        HomeCardSectionUi(
+            "交朋友",
+            listOf(
+                HomeGameUi("交友大厅", R.drawable.card_friends_lobby, "90%", "9.8k"),
+                HomeGameUi("天堂岛", R.drawable.card_friends_paradise, "91%", "6.8k"),
+                HomeGameUi("学校模拟器", R.drawable.card_friends_school, "88%", "7.6k", true),
+            ),
+        ),
+        HomeCardSectionUi(
+            "角色扮演",
+            listOf(
+                HomeGameUi("海岛生存", R.drawable.card_rpg_island, "91%", "7.4k", true),
+                HomeGameUi("神秘杀手", R.drawable.card_rpg_assassin, "86%", "5.3k"),
+                HomeGameUi("幸存者", R.drawable.card_rpg_survivor, "89%", "8.1k", true),
+                HomeGameUi("战争前线", R.drawable.card_rpg_war_front, "88%", "6.9k"),
+            ),
+        ),
+        HomeCardSectionUi(
+            "经典游戏",
+            listOf(
+                HomeGameUi("大农场主", R.drawable.card_classic_farmer, "90%", "4.9k"),
+                HomeGameUi("躲猫猫", R.drawable.card_classic_hide_seek, "92%", "10.1k", true),
+                HomeGameUi("饥饿游戏", R.drawable.card_classic_hunger, "91%", "11.7k"),
+                HomeGameUi("生化危机", R.drawable.card_classic_biohazard, "87%", "5.4k"),
+            ),
+        ),
+        HomeCardSectionUi(
+            "恐怖游戏",
+            listOf(
+                HomeGameUi("恐怖驱魔杀", R.drawable.card_horror_exorcist, "89%", "4.9k", true),
+                HomeGameUi("迷雾逃生", R.drawable.card_horror_fog_escape, "86%", "4.1k"),
+                HomeGameUi("校园惊魂夜", R.drawable.card_horror_school_night, "85%", "3.5k"),
+                HomeGameUi("行尸走肉", R.drawable.card_horror_walking_dead, "88%", "5.8k"),
+            ),
+        ),
+        HomeCardSectionUi(
+            "射击游戏",
+            listOf(
+                HomeGameUi("方块入侵", R.drawable.card_shooter_block_invasion, "87%", "5.1k"),
+                HomeGameUi("建造与射击", R.drawable.card_shooter_build_shoot, "90%", "6.2k", true),
+                HomeGameUi("异星入侵", R.drawable.card_shooter_alien, "86%", "4.7k"),
+                HomeGameUi("罪恶都市", R.drawable.card_shooter_crime_city, "91%", "12.6k", true),
+            ),
+        ),
+        HomeCardSectionUi(
+            "最新上线",
+            listOf(
+                HomeGameUi("暴力摩托", R.drawable.card_new_moto, "88%", "4.6k"),
+                HomeGameUi("极限跑酷", R.drawable.card_new_parkour, "90%", "3.8k", true),
+                HomeGameUi("巨人", R.drawable.card_new_giant, "86%", "2.7k"),
+                HomeGameUi("幸存者", R.drawable.card_new_survivor, "87%", "6.3k", true),
+            ),
+        ),
+        HomeCardSectionUi(
+            "PVP",
+            listOf(
+                HomeGameUi("躲猫猫", R.drawable.card_pvp_hide_seek, "92%", "10.8k", true),
+                HomeGameUi("皇室战争", R.drawable.card_pvp_royal_war, "88%", "8.5k"),
+                HomeGameUi("武道大会", R.drawable.card_pvp_martial, "89%", "7.2k", true),
+                HomeGameUi("Squad Battle", R.drawable.card_pvp_squad_battle, "86%", "6.4k"),
+            ),
+        ),
     )
 
 @Composable
@@ -88,8 +147,14 @@ fun HomeTabPage(modifier: Modifier = Modifier) {
     ) {
         item { HomeTopBar() }
         item { PromoStrip() }
-        homeGameSection(title = "推荐游戏", games = recommendedGames, columns = 3)
-        homeGameSection(title = "交朋友", games = friendGames, columns = 4)
+        homeCardSections.forEach { section ->
+            homeGameSection(
+                title = section.title,
+                games = section.games,
+                columns = 3,
+                horizontal = section.title != "推荐游戏",
+            )
+        }
     }
 }
 
@@ -261,13 +326,18 @@ private fun ShortcutTile(title: String, icon: ImageVector) {
     }
 }
 
-private fun LazyListScope.homeGameSection(title: String, games: List<HomeGameUi>, columns: Int) {
+private fun LazyListScope.homeGameSection(
+    title: String,
+    games: List<HomeGameUi>,
+    columns: Int,
+    horizontal: Boolean,
+) {
     item {
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(title, color = Color(0xFF171A20), fontSize = 24.sp, fontWeight = FontWeight.Black)
+            Text(title, color = Color(0xFF171A20), fontSize = 17.sp, fontWeight = FontWeight.Black)
             Spacer(Modifier.weight(1f))
             Icon(
                 Icons.Filled.ChevronRight,
@@ -276,6 +346,16 @@ private fun LazyListScope.homeGameSection(title: String, games: List<HomeGameUi>
                 modifier = Modifier.size(38.dp),
             )
         }
+    }
+    if (horizontal) {
+        item {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                items(games.size) { index ->
+                    HomeGameCard(game = games[index], modifier = Modifier.width(104.dp))
+                }
+            }
+        }
+        return
     }
     games.chunked(columns).forEach { rowGames ->
         item {
@@ -330,11 +410,11 @@ private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier) {
         Text(
             text = game.title,
             color = Color(0xFF1E2025),
-            fontSize = 18.sp,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Black,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            lineHeight = 21.sp,
+            lineHeight = 18.sp,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,

@@ -45,6 +45,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.sceneview.SceneView
+import io.github.sceneview.gesture.CameraGestureDetector
+import io.github.sceneview.math.Transform
 import io.github.sceneview.rememberEngine
 import io.github.sceneview.rememberModelLoader
 
@@ -220,17 +222,9 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
         modifier = modifier.background(modelPreviewBackground),
         contentAlignment = Alignment.Center,
     ) {
-        Box(modifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f)) {
-            Canvas(modifier = Modifier.matchParentSize()) {
-                drawOval(
-                    Color(0x33000000),
-                    topLeft = Offset(size.width * 0.08f, size.height * 0.88f),
-                    size = Size(size.width * 0.84f, size.height * 0.08f),
-                )
-            }
-        }
         val engine = rememberEngine()
         val modelLoader = rememberModelLoader(engine)
+        val cameraManipulator = remember { HorizontalOnlyCameraManipulator() }
         val modelInstance =
             remember(modelLoader) {
                 modelLoader.createModelInstance(
@@ -242,10 +236,54 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
             engine = engine,
             modelLoader = modelLoader,
             isOpaque = false,
+            cameraManipulator = cameraManipulator,
         ) {
-            ModelNode(modelInstance = modelInstance, scaleToUnits = 2.15f)
+            ModelNode(modelInstance = modelInstance, scaleToUnits = 1.75f)
         }
     }
+}
+
+private class HorizontalOnlyCameraManipulator(
+    private val delegate: CameraGestureDetector.CameraManipulator =
+        CameraGestureDetector.DefaultCameraManipulator()
+) : CameraGestureDetector.CameraManipulator {
+    private var orbitY = 0
+    private var isPanning = false
+
+    override fun setViewport(width: Int, height: Int) = delegate.setViewport(width, height)
+
+    override fun getTransform(): Transform = delegate.getTransform()
+
+    override fun grabBegin(x: Int, y: Int, strafe: Boolean) {
+        isPanning = strafe
+        orbitY = y
+        if (!isPanning) {
+            delegate.grabBegin(x, orbitY, false)
+        }
+    }
+
+    override fun grabUpdate(x: Int, y: Int) {
+        if (!isPanning) {
+            delegate.grabUpdate(x, orbitY)
+        }
+    }
+
+    override fun grabEnd() {
+        if (!isPanning) {
+            delegate.grabEnd()
+        }
+        isPanning = false
+    }
+
+    override fun scrollBegin(x: Int, y: Int, separation: Float) =
+        delegate.scrollBegin(x, y, separation)
+
+    override fun scrollUpdate(x: Int, y: Int, prevSeparation: Float, currSeparation: Float) =
+        delegate.scrollUpdate(x, y, prevSeparation, currSeparation)
+
+    override fun scrollEnd() = delegate.scrollEnd()
+
+    override fun update(deltaTime: Float) = delegate.update(deltaTime)
 }
 
 @Composable
