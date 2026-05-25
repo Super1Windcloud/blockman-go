@@ -175,14 +175,14 @@ private fun HomeTopBar() {
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color(0xFF8B34E8),
-                modifier = Modifier.size(42.dp),
+                modifier = Modifier.size(21.dp),
             )
             Spacer(Modifier.width(24.dp))
             Icon(
                 imageVector = Icons.Filled.Notifications,
                 contentDescription = null,
                 tint = Color(0xFFFF8C6B),
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(18.dp),
             )
         }
     }
@@ -199,7 +199,7 @@ private fun CurrencyPill(icon: ImageVector, tint: Color) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(24.dp))
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(12.dp))
         Text("0", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Black)
         Box(
             modifier = Modifier.size(40.dp).clip(CircleShape).background(Color(0xFF7F35EA)),
@@ -209,7 +209,7 @@ private fun CurrencyPill(icon: ImageVector, tint: Color) {
                 Icons.Filled.Add,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(15.dp),
             )
         }
     }
@@ -217,17 +217,17 @@ private fun CurrencyPill(icon: ImageVector, tint: Color) {
 
 @Composable
 private fun AlertGlyph() {
-    Box(modifier = Modifier.size(48.dp), contentAlignment = Alignment.Center) {
-        Text("靓", color = Color(0xFFF2436F), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+    Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+        Text("靓", color = Color(0xFFF2436F), fontSize = 8.sp, fontWeight = FontWeight.Bold)
         Box(
             modifier =
                 Modifier.align(Alignment.TopEnd)
-                    .size(22.dp)
+                    .size(11.dp)
                     .clip(CircleShape)
                     .background(Color(0xFFFF3E70)),
             contentAlignment = Alignment.Center,
         ) {
-            Text("!", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black)
+            Text("!", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Black)
         }
     }
 }
