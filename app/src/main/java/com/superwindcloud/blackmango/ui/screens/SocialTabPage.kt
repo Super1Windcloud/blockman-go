@@ -2,6 +2,7 @@ package com.superwindcloud.blackmango.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,10 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,10 +42,10 @@ import androidx.compose.ui.unit.sp
 import com.superwindcloud.blackmango.ui.navigation.ScreenBackground
 
 @Composable
-fun SocialTabPage(modifier: Modifier = Modifier) {
+fun SocialTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}) {
     Column(modifier = modifier.fillMaxSize().background(ScreenBackground)) {
-        SocialTopTabs()
-        FeaturedActivity()
+        SocialTopTabs(onNavigate = onNavigate)
+        FeaturedActivity(onClick = { onNavigate("精彩活动") })
         Box(
             modifier =
                 Modifier.fillMaxWidth()
@@ -55,7 +60,9 @@ fun SocialTabPage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun SocialTopTabs() {
+private fun SocialTopTabs(onNavigate: (String) -> Unit) {
+    var selectedLabel by remember { mutableStateOf("聊天") }
+
     Row(
         modifier =
             Modifier.fillMaxWidth()
@@ -65,18 +72,55 @@ private fun SocialTopTabs() {
         horizontalArrangement = Arrangement.spacedBy(26.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SocialTabItem("聊天", Icons.Filled.ChatBubbleOutline, selected = true)
-        SocialTabItem("好友", Icons.Filled.Groups)
-        SocialTabItem("派对", Icons.Filled.Flag)
-        SocialTabItem("部落", Icons.Filled.ChangeHistory)
+        SocialTabItem(
+            "聊天",
+            Icons.Filled.ChatBubbleOutline,
+            selected = selectedLabel == "聊天",
+            onClick = {
+                selectedLabel = "聊天"
+                onNavigate("聊天")
+            },
+        )
+        SocialTabItem(
+            "好友",
+            Icons.Filled.Groups,
+            selected = selectedLabel == "好友",
+            onClick = {
+                selectedLabel = "好友"
+                onNavigate("好友")
+            },
+        )
+        SocialTabItem(
+            "派对",
+            Icons.Filled.Flag,
+            selected = selectedLabel == "派对",
+            onClick = {
+                selectedLabel = "派对"
+                onNavigate("派对")
+            },
+        )
+        SocialTabItem(
+            "部落",
+            Icons.Filled.ChangeHistory,
+            selected = selectedLabel == "部落",
+            onClick = {
+                selectedLabel = "部落"
+                onNavigate("部落")
+            },
+        )
     }
 }
 
 @Composable
-private fun SocialTabItem(label: String, icon: ImageVector, selected: Boolean = false) {
+private fun SocialTabItem(
+    label: String,
+    icon: ImageVector,
+    selected: Boolean = false,
+    onClick: () -> Unit,
+) {
     val color = if (selected) Color(0xFF8E45E9) else Color(0xFF9B9CA1)
     Column(
-        modifier = Modifier.width(42.dp),
+        modifier = Modifier.width(42.dp).clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
@@ -97,13 +141,14 @@ private fun SocialTabItem(label: String, icon: ImageVector, selected: Boolean = 
 }
 
 @Composable
-private fun FeaturedActivity() {
+private fun FeaturedActivity(onClick: () -> Unit) {
     Row(
         modifier =
             Modifier.fillMaxWidth()
                 .height(102.dp)
                 .background(Color.White)
                 .border(width = 0.5.dp, color = Color(0xFFE5E5E7))
+                .clickable(onClick = onClick)
                 .padding(start = 18.dp, end = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

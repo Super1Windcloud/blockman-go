@@ -1,9 +1,9 @@
 package com.superwindcloud.blackmango.ui.screens
 
-import android.R.attr.fontWeight
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,7 +55,7 @@ import com.superwindcloud.blackmango.R
 import com.superwindcloud.blackmango.ui.navigation.ScreenBackground
 
 @Composable
-fun ProfileTabPage(modifier: Modifier = Modifier) {
+fun ProfileTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}) {
     Box(modifier = modifier.background(ScreenBackground)) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -63,21 +63,22 @@ fun ProfileTabPage(modifier: Modifier = Modifier) {
                 PaddingValues(start = 22.dp, top = 14.dp, end = 22.dp, bottom = 104.dp),
             verticalArrangement = Arrangement.spacedBy(18.dp),
         ) {
-            item { ProfileHero() }
-            item { GuestNotice() }
-            item { ShortcutPanel() }
-            item { SettingsPanel() }
+            item { ProfileHero(onNavigate = onNavigate) }
+            item { GuestNotice(onNavigate = onNavigate) }
+            item { ShortcutPanel(onNavigate = onNavigate) }
+            item { SettingsPanel(onNavigate = onNavigate) }
         }
     }
 }
 
 @Composable
-private fun ProfileHero() {
+private fun ProfileHero(onNavigate: (String) -> Unit) {
     Box(Modifier.fillMaxWidth().height(150.dp)) {
         Icon(
             imageVector = Icons.Filled.ManageAccounts,
             contentDescription = "编辑资料",
-            modifier = Modifier.align(Alignment.TopEnd).size(31.dp),
+            modifier =
+                Modifier.align(Alignment.TopEnd).size(31.dp).clickable { onNavigate("编辑资料") },
             tint = Color(0xFF15191F),
         )
         PinkDot(modifier = Modifier.align(Alignment.TopEnd).padding(top = 1.dp, end = 1.dp))
@@ -160,12 +161,13 @@ private fun VipBadge() {
 }
 
 @Composable
-private fun GuestNotice() {
+private fun GuestNotice(onNavigate: (String) -> Unit) {
     Row(
         modifier =
             Modifier.fillMaxWidth()
                 .clip(RoundedCornerShape(22.dp))
                 .background(Color(0xFFECE8FF))
+                .clickable { onNavigate("注册账号") }
                 .padding(start = 28.dp, top = 25.dp, end = 22.dp, bottom = 25.dp),
         verticalAlignment = Alignment.Bottom,
     ) {
@@ -194,7 +196,7 @@ private fun GuestNotice() {
 }
 
 @Composable
-private fun ShortcutPanel() {
+private fun ShortcutPanel(onNavigate: (String) -> Unit) {
     Row(
         modifier =
             Modifier.fillMaxWidth()
@@ -203,17 +205,23 @@ private fun ShortcutPanel() {
                 .padding(horizontal = 12.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        ShortcutItem("月卡", Icons.Filled.CreditCard, Color(0xFFFF45AF))
-        ShortcutItem("VIP", Icons.Filled.WorkspacePremium, Color(0xFFFFC629))
-        ShortcutItem("充值", Icons.Filled.Paid, Color(0xFFFFD33E))
-        ShortcutItem("订阅", Icons.Filled.Favorite, Color(0xFFFF34B5))
-        ShortcutItem("礼包", Icons.Filled.Redeem, Color(0xFFFFC032))
+        ShortcutItem("月卡", Icons.Filled.CreditCard, Color(0xFFFF45AF), onNavigate)
+        ShortcutItem("VIP", Icons.Filled.WorkspacePremium, Color(0xFFFFC629), onNavigate)
+        ShortcutItem("充值", Icons.Filled.Paid, Color(0xFFFFD33E), onNavigate)
+        ShortcutItem("订阅", Icons.Filled.Favorite, Color(0xFFFF34B5), onNavigate)
+        ShortcutItem("礼包", Icons.Filled.Redeem, Color(0xFFFFC032), onNavigate)
     }
 }
 
 @Composable
-private fun ShortcutItem(label: String, icon: ImageVector, iconColor: Color) {
+private fun ShortcutItem(
+    label: String,
+    icon: ImageVector,
+    iconColor: Color,
+    onNavigate: (String) -> Unit,
+) {
     Column(
+        modifier = Modifier.clickable { onNavigate(label) },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -234,7 +242,7 @@ private fun ShortcutItem(label: String, icon: ImageVector, iconColor: Color) {
 }
 
 @Composable
-private fun SettingsPanel() {
+private fun SettingsPanel(onNavigate: (String) -> Unit) {
     Column(
         modifier =
             Modifier.fillMaxWidth()
@@ -242,22 +250,44 @@ private fun SettingsPanel() {
                 .background(Color.White)
                 .padding(top = 2.dp)
     ) {
-        MenuItem("活动中心", Icons.Filled.Flag, Color(0xFFF24F6D))
-        MenuItem("背包", Icons.Filled.ShoppingBag, Color(0xFFFF864B))
-        MenuItem("夜间模式", Icons.Filled.DarkMode, Color(0xFF8C61D8))
-        MenuItem("视频", Icons.Filled.PlayCircle, Color(0xFF6696F0))
-        MenuItem("官方社媒", Icons.Filled.MusicNote, Color(0xFF9B5AEF))
-        MenuItem("官网", Icons.Filled.Public, Color(0xFF5C8FF1), showDot = true)
-        MenuItem("收件箱", Icons.Filled.Email, Color(0xFF42CFE0))
-        MenuItem("设置", Icons.Filled.Settings, Color(0xFF8EA3CC), showDot = true)
-        MenuItem("帮助", Icons.AutoMirrored.Filled.Help, Color(0xFF5FC58E))
+        MenuItem("活动中心", Icons.Filled.Flag, Color(0xFFF24F6D), onNavigate = onNavigate)
+        MenuItem("背包", Icons.Filled.ShoppingBag, Color(0xFFFF864B), onNavigate = onNavigate)
+        MenuItem("夜间模式", Icons.Filled.DarkMode, Color(0xFF8C61D8), onNavigate = onNavigate)
+        MenuItem("视频", Icons.Filled.PlayCircle, Color(0xFF6696F0), onNavigate = onNavigate)
+        MenuItem("官方社媒", Icons.Filled.MusicNote, Color(0xFF9B5AEF), onNavigate = onNavigate)
+        MenuItem(
+            "官网",
+            Icons.Filled.Public,
+            Color(0xFF5C8FF1),
+            showDot = true,
+            onNavigate = onNavigate,
+        )
+        MenuItem("收件箱", Icons.Filled.Email, Color(0xFF42CFE0), onNavigate = onNavigate)
+        MenuItem(
+            "设置",
+            Icons.Filled.Settings,
+            Color(0xFF8EA3CC),
+            showDot = true,
+            onNavigate = onNavigate,
+        )
+        MenuItem("帮助", Icons.AutoMirrored.Filled.Help, Color(0xFF5FC58E), onNavigate = onNavigate)
     }
 }
 
 @Composable
-private fun MenuItem(label: String, icon: ImageVector, iconColor: Color, showDot: Boolean = false) {
+private fun MenuItem(
+    label: String,
+    icon: ImageVector,
+    iconColor: Color,
+    showDot: Boolean = false,
+    onNavigate: (String) -> Unit,
+) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 24.dp),
+        modifier =
+            Modifier.fillMaxWidth()
+                .height(52.dp)
+                .clickable { onNavigate(label) }
+                .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(icon, contentDescription = label, modifier = Modifier.size(26.dp), tint = iconColor)

@@ -58,7 +58,7 @@ import com.superwindcloud.blackmango.R
 import com.superwindcloud.blackmango.ui.navigation.ScreenBackground
 
 @Composable
-fun RoomsTabPage(modifier: Modifier = Modifier) {
+fun RoomsTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}) {
     var section by remember { mutableStateOf(RoomsSection.Rooms) }
 
     Box(modifier = modifier.fillMaxSize().background(ScreenBackground)) {
@@ -67,12 +67,20 @@ fun RoomsTabPage(modifier: Modifier = Modifier) {
             contentPadding = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 90.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp),
         ) {
-            item { RoomsHeader(selectedSection = section, onSectionSelected = { section = it }) }
+            item {
+                RoomsHeader(
+                    selectedSection = section,
+                    onSectionSelected = { selected -> section = selected },
+                    onInventoryClick = { onNavigate("收纳箱") },
+                )
+            }
             if (section == RoomsSection.Rooms) {
-                item { RoomCategoryTabs() }
-                items(roomCards) { room -> RoomListCard(room = room) }
+                item { RoomCategoryTabs(onNavigate = onNavigate) }
+                items(roomCards) { room ->
+                    RoomListCard(room = room, onClick = { onNavigate(room.title) })
+                }
             } else {
-                item { WorkshopTabs() }
+                item { WorkshopTabs(onNavigate = onNavigate) }
                 workshopCards.chunked(2).forEach { rowCards ->
                     item {
                         Row(
@@ -80,7 +88,11 @@ fun RoomsTabPage(modifier: Modifier = Modifier) {
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             rowCards.forEach { card ->
-                                WorkshopCard(card = card, modifier = Modifier.weight(1f))
+                                WorkshopCard(
+                                    card = card,
+                                    modifier = Modifier.weight(1f),
+                                    onClick = { onNavigate(card.title) },
+                                )
                             }
                             if (rowCards.size == 1) {
                                 Spacer(modifier = Modifier.weight(1f))
@@ -92,7 +104,7 @@ fun RoomsTabPage(modifier: Modifier = Modifier) {
         }
 
         FloatingActionButton(
-            onClick = {},
+            onClick = { onNavigate("创建房间") },
             modifier =
                 Modifier.align(Alignment.BottomEnd)
                     .padding(end = 24.dp, bottom = 82.dp)
@@ -107,7 +119,11 @@ fun RoomsTabPage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RoomsHeader(selectedSection: RoomsSection, onSectionSelected: (RoomsSection) -> Unit) {
+private fun RoomsHeader(
+    selectedSection: RoomsSection,
+    onSectionSelected: (RoomsSection) -> Unit,
+    onInventoryClick: () -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -132,7 +148,7 @@ private fun RoomsHeader(selectedSection: RoomsSection, onSectionSelected: (Rooms
             Icons.Outlined.Inventory2,
             contentDescription = "收纳箱",
             tint = Color(0xFF202124),
-            modifier = Modifier.size(22.dp),
+            modifier = Modifier.size(22.dp).clickable(onClick = onInventoryClick),
         )
     }
 }
@@ -149,7 +165,7 @@ private fun RoomsHeaderTab(text: String, selected: Boolean, onClick: () -> Unit)
 }
 
 @Composable
-private fun RoomCategoryTabs() {
+private fun RoomCategoryTabs(onNavigate: (String) -> Unit) {
     val labels = listOf("全部", "UGC", "挖矿", "创造", "PVP", "社交", "游戏", "最近游玩")
     Row(
         modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -162,9 +178,10 @@ private fun RoomCategoryTabs() {
                 modifier =
                     if (index == 0) {
                         Modifier.background(Color(0xFFE8E9ED), RoundedCornerShape(20.dp))
+                            .clickable { onNavigate(label) }
                             .padding(horizontal = 11.dp, vertical = 6.dp)
                     } else {
-                        Modifier.padding(vertical = 6.dp)
+                        Modifier.clickable { onNavigate(label) }.padding(vertical = 6.dp)
                     },
                 color = if (index == 0) Color(0xFF17191D) else Color(0xFF8B8D93),
                 fontSize = 15.sp,
@@ -176,7 +193,7 @@ private fun RoomCategoryTabs() {
 }
 
 @Composable
-private fun WorkshopTabs() {
+private fun WorkshopTabs(onNavigate: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(15.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -185,6 +202,7 @@ private fun WorkshopTabs() {
             text = "创意征集",
             modifier =
                 Modifier.background(Color(0xFFE8E9ED), RoundedCornerShape(20.dp))
+                    .clickable { onNavigate("创意征集") }
                     .padding(horizontal = 12.dp, vertical = 6.dp),
             color = Color(0xFF17191D),
             fontSize = 15.sp,
@@ -192,6 +210,7 @@ private fun WorkshopTabs() {
         )
         Text(
             text = "热门作品",
+            modifier = Modifier.clickable { onNavigate("热门作品") },
             color = Color(0xFF8B8D93),
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
@@ -200,9 +219,9 @@ private fun WorkshopTabs() {
 }
 
 @Composable
-private fun RoomListCard(room: RoomCard) {
+private fun RoomListCard(room: RoomCard, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(100.dp),
+        modifier = Modifier.fillMaxWidth().height(100.dp).clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
@@ -325,9 +344,9 @@ private fun CapacityMeter(current: Int, total: Int) {
 }
 
 @Composable
-private fun WorkshopCard(card: WorkshopCard, modifier: Modifier = Modifier) {
+private fun WorkshopCard(card: WorkshopCard, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClick),
         shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),

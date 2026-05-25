@@ -3,6 +3,7 @@ package com.superwindcloud.blackmango.ui.screens
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -139,62 +140,72 @@ private val homeCardSections =
     )
 
 @Composable
-fun HomeTabPage(modifier: Modifier = Modifier) {
+fun HomeTabPage(modifier: Modifier = Modifier, onNavigate: (String) -> Unit = {}) {
     LazyColumn(
         modifier = modifier.fillMaxSize().background(ScreenBackground),
         contentPadding = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 92.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
-        item { HomeTopBar() }
-        item { PromoStrip() }
+        item { HomeTopBar(onNavigate = onNavigate) }
+        item { PromoStrip(onNavigate = onNavigate) }
         homeCardSections.forEach { section ->
             homeGameSection(
                 title = section.title,
                 games = section.games,
                 columns = 3,
                 horizontal = section.title != "推荐游戏",
+                onNavigate = onNavigate,
             )
         }
     }
 }
 
 @Composable
-private fun HomeTopBar() {
+private fun HomeTopBar(onNavigate: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(22.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            CurrencyPill(icon = Icons.Filled.SportsEsports, tint = Color(0xFFFF5AB0))
+            CurrencyPill(
+                icon = Icons.Filled.SportsEsports,
+                tint = Color(0xFFFF5AB0),
+                onClick = { onNavigate("游戏币") },
+            )
             Spacer(Modifier.width(14.dp))
-            CurrencyPill(icon = Icons.Filled.WorkspacePremium, tint = Color(0xFFE8B52A))
+            CurrencyPill(
+                icon = Icons.Filled.WorkspacePremium,
+                tint = Color(0xFFE8B52A),
+                onClick = { onNavigate("奖章") },
+            )
             Spacer(Modifier.weight(1f))
-            AlertGlyph()
+            AlertGlyph(onClick = { onNavigate("靓号提醒") })
             Spacer(Modifier.width(24.dp))
             Icon(
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color(0xFF8B34E8),
-                modifier = Modifier.size(21.dp),
+                modifier = Modifier.size(21.dp).clickable { onNavigate("搜索") },
             )
             Spacer(Modifier.width(24.dp))
             Icon(
                 imageVector = Icons.Filled.Notifications,
                 contentDescription = null,
                 tint = Color(0xFFFF8C6B),
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(18.dp).clickable { onNavigate("通知") },
             )
         }
     }
 }
 
 @Composable
-private fun CurrencyPill(icon: ImageVector, tint: Color) {
+private fun CurrencyPill(icon: ImageVector, tint: Color, onClick: () -> Unit) {
     Row(
         modifier =
             Modifier.height(36.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(Color(0xFFD1D1D5))
+                .clickable(onClick = onClick)
                 .padding(start = 10.dp, end = 0.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -216,8 +227,11 @@ private fun CurrencyPill(icon: ImageVector, tint: Color) {
 }
 
 @Composable
-private fun AlertGlyph() {
-    Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+private fun AlertGlyph(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier.size(24.dp).clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
         Text("靓", color = Color(0xFFF2436F), fontSize = 8.sp, fontWeight = FontWeight.Bold)
         Box(
             modifier =
@@ -233,20 +247,25 @@ private fun AlertGlyph() {
 }
 
 @Composable
-private fun PromoStrip() {
+private fun PromoStrip(onNavigate: (String) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ShortcutTile(title = "G-Cube", icon = Icons.Filled.WorkspacePremium)
-        ShortcutTile(title = "S9", icon = Icons.Filled.Star)
+        ShortcutTile(
+            title = "G-Cube",
+            icon = Icons.Filled.WorkspacePremium,
+            onClick = { onNavigate("G-Cube") },
+        )
+        ShortcutTile(title = "S9", icon = Icons.Filled.Star, onClick = { onNavigate("S9") })
         Box(
             modifier =
                 Modifier.weight(1f)
                     .height(82.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFF356FAE))
+                    .clickable { onNavigate("累计充值") }
         ) {
             Image(
                 painter = painterResource(R.drawable.card_reco_sky_survival),
@@ -288,7 +307,7 @@ private fun PromoStrip() {
 }
 
 @Composable
-private fun ShortcutTile(title: String, icon: ImageVector) {
+private fun ShortcutTile(title: String, icon: ImageVector, onClick: () -> Unit) {
     Box(
         modifier =
             Modifier.size(72.dp)
@@ -298,6 +317,7 @@ private fun ShortcutTile(title: String, icon: ImageVector) {
                         listOf(Color(0xFF8A55F4), Color(0xFFFF73C7), Color(0xFFFFD948))
                     )
                 )
+                .clickable(onClick = onClick)
     ) {
         Text(
             title,
@@ -331,6 +351,7 @@ private fun LazyListScope.homeGameSection(
     games: List<HomeGameUi>,
     columns: Int,
     horizontal: Boolean,
+    onNavigate: (String) -> Unit,
 ) {
     item {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -349,14 +370,18 @@ private fun LazyListScope.homeGameSection(
                     Icons.Filled.ChevronRight,
                     contentDescription = null,
                     tint = Color(0xFFB7B7B9),
-                    modifier = Modifier.size(38.dp),
+                    modifier = Modifier.size(38.dp).clickable { onNavigate(title) },
                 )
             }
 
             if (horizontal) {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     items(games.size) { index ->
-                        HomeGameCard(game = games[index], modifier = Modifier.width(104.dp))
+                        HomeGameCard(
+                            game = games[index],
+                            modifier = Modifier.width(104.dp),
+                            onClick = { onNavigate(games[index].title) },
+                        )
                     }
                 }
             } else {
@@ -367,7 +392,11 @@ private fun LazyListScope.homeGameSection(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             rowGames.forEach { game ->
-                                HomeGameCard(game = game, modifier = Modifier.weight(1f))
+                                HomeGameCard(
+                                    game = game,
+                                    modifier = Modifier.weight(1f),
+                                    onClick = { onNavigate(game.title) },
+                                )
                             }
                             repeat(columns - rowGames.size) { Spacer(Modifier.weight(1f)) }
                         }
@@ -379,10 +408,13 @@ private fun LazyListScope.homeGameSection(
 }
 
 @Composable
-private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier) {
+private fun HomeGameCard(game: HomeGameUi, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val playersText = game.players.withPlayerUnit()
 
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+    Column(
+        modifier = modifier.clickable(onClick = onClick),
+        verticalArrangement = Arrangement.spacedBy(7.dp),
+    ) {
         Box(
             modifier =
                 Modifier.fillMaxWidth()

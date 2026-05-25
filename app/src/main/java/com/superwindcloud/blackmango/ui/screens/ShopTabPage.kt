@@ -75,27 +75,35 @@ private val shopItems =
     )
 
 @Composable
-fun ShopTabPage(modifier: Modifier = Modifier) {
-    var isModelFullscreen by remember { mutableStateOf(false) }
-
+fun ShopTabPage(
+    modifier: Modifier = Modifier,
+    modelFullscreen: Boolean = false,
+    onNavigate: (String) -> Unit = {},
+    onFullscreenClick: () -> Unit = {},
+) {
     Column(modifier = modifier.fillMaxSize().background(Color(0xFFF2F2F5))) {
         AvatarPreview(
             modifier =
-                if (isModelFullscreen) {
+                if (modelFullscreen) {
                     Modifier.fillMaxSize()
                 } else {
                     Modifier.fillMaxWidth().weight(1.08f)
                 },
-            onFullscreenClick = { isModelFullscreen = !isModelFullscreen },
+            onNavigate = onNavigate,
+            onFullscreenClick = onFullscreenClick,
         )
-        if (!isModelFullscreen) {
-            WardrobePanel(modifier = Modifier.fillMaxWidth().weight(1f))
+        if (!modelFullscreen) {
+            WardrobePanel(modifier = Modifier.fillMaxWidth().weight(1f), onNavigate = onNavigate)
         }
     }
 }
 
 @Composable
-private fun AvatarPreview(modifier: Modifier = Modifier, onFullscreenClick: () -> Unit) {
+private fun AvatarPreview(
+    modifier: Modifier = Modifier,
+    onNavigate: (String) -> Unit,
+    onFullscreenClick: () -> Unit,
+) {
     Box(
         modifier =
             modifier.background(
@@ -110,37 +118,44 @@ private fun AvatarPreview(modifier: Modifier = Modifier, onFullscreenClick: () -
             modifier = Modifier.align(Alignment.TopStart).padding(start = 14.dp, top = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            CurrencyPill(symbol = "🎟", amount = "0")
-            CurrencyPill(symbol = "▣", amount = "0")
+            CurrencyPill(symbol = "🎟", amount = "0", onClick = { onNavigate("商店券") })
+            CurrencyPill(symbol = "▣", amount = "0", onClick = { onNavigate("商店方块") })
         }
         AtlasButton(
-            modifier = Modifier.align(Alignment.TopStart).padding(start = 16.dp, top = 72.dp)
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 16.dp, top = 72.dp),
+            onClick = { onNavigate("图鉴") },
         )
-        PetBadge(modifier = Modifier.align(Alignment.TopEnd).padding(end = 18.dp, top = 14.dp))
+        PetBadge(
+            modifier = Modifier.align(Alignment.TopEnd).padding(end = 18.dp, top = 14.dp),
+            onClick = { onNavigate("宠物") },
+        )
         BlockmanModelPreview(modifier = Modifier.align(Alignment.Center).fillMaxSize())
         Column(
             modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             RoundIconButton(Icons.Rounded.Expand, onClick = onFullscreenClick)
-            RoundIconButton(Icons.Rounded.Cached)
+            RoundIconButton(Icons.Rounded.Cached, onClick = { onNavigate("刷新形象") })
         }
         CartPill(
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp)
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp),
+            onClick = { onNavigate("购物车") },
         )
         WardrobeToggle(
-            modifier = Modifier.align(Alignment.BottomStart).padding(start = 12.dp, bottom = 14.dp)
+            modifier = Modifier.align(Alignment.BottomStart).padding(start = 12.dp, bottom = 14.dp),
+            onClick = { onNavigate("我的衣柜") },
         )
     }
 }
 
 @Composable
-private fun CurrencyPill(symbol: String, amount: String) {
+private fun CurrencyPill(symbol: String, amount: String, onClick: () -> Unit) {
     Row(
         modifier =
             Modifier.height(28.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(Color(0x88959AA5))
+                .clickable(onClick = onClick)
                 .padding(start = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -167,8 +182,11 @@ private fun CurrencyPill(symbol: String, amount: String) {
 }
 
 @Composable
-private fun AtlasButton(modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+private fun AtlasButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Column(
+        modifier = modifier.clickable(onClick = onClick),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Box(
             modifier =
                 Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)).background(Color(0x99888A92)),
@@ -191,8 +209,11 @@ private fun AtlasButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun PetBadge(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.size(52.dp), contentAlignment = Alignment.Center) {
+private fun PetBadge(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Box(
+        modifier = modifier.size(52.dp).clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawOval(
                 Color(0x993BE9FF),
@@ -429,14 +450,15 @@ private fun RoundIconButton(icon: ImageVector, onClick: (() -> Unit)? = null) {
 }
 
 @Composable
-private fun CartPill(modifier: Modifier = Modifier) {
+private fun CartPill(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Row(
         modifier =
             modifier
                 .height(38.dp)
                 .width(96.dp)
                 .clip(RoundedCornerShape(14.dp))
-                .background(Color(0xB38754EA)),
+                .background(Color(0xB38754EA))
+                .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
@@ -457,14 +479,15 @@ private fun CartPill(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun WardrobeToggle(modifier: Modifier = Modifier) {
+private fun WardrobeToggle(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Row(
         modifier =
             modifier
                 .height(40.dp)
                 .width(132.dp)
                 .clip(RoundedCornerShape(24.dp))
-                .background(Color.White),
+                .background(Color.White)
+                .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
@@ -494,7 +517,7 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun WardrobePanel(modifier: Modifier = Modifier) {
+private fun WardrobePanel(modifier: Modifier = Modifier, onNavigate: (String) -> Unit) {
     var selectedCategory by remember { mutableStateOf(shopCategories.first()) }
     val visibleItems = shopItems.filter { item ->
         when (selectedCategory) {
@@ -525,7 +548,10 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
                 CategoryTab(
                     label = label,
                     selected = label == selectedCategory,
-                    onClick = { selectedCategory = label },
+                    onClick = {
+                        selectedCategory = label
+                        onNavigate(label)
+                    },
                 )
             }
         }
@@ -536,7 +562,12 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             shopFilters.forEachIndexed { index, label ->
-                FilterTab(label, selected = index == 0, hasDot = index == 1)
+                FilterTab(
+                    label = label,
+                    selected = index == 0,
+                    hasDot = index == 1,
+                    onClick = { onNavigate(label) },
+                )
             }
         }
         LazyColumn(
@@ -556,7 +587,11 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         rowItems.forEach { item ->
-                            ShopCard(item = item, modifier = Modifier.weight(1f))
+                            ShopCard(
+                                item = item,
+                                modifier = Modifier.weight(1f),
+                                onClick = { onNavigate(item.name) },
+                            )
                         }
                         repeat(4 - rowItems.size) { Spacer(Modifier.weight(1f)) }
                     }
@@ -588,7 +623,7 @@ private fun CategoryTab(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
+private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean, onClick: () -> Unit) {
     Box {
         Text(
             label,
@@ -596,8 +631,11 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
                 if (selected)
                     Modifier.clip(RoundedCornerShape(8.dp))
                         .background(Color(0xFFE4E4EA))
+                        .clickable(onClick = onClick)
                         .padding(horizontal = 10.dp, vertical = 6.dp)
-                else Modifier.padding(horizontal = 4.dp, vertical = 6.dp),
+                else
+                    Modifier.clickable(onClick = onClick)
+                        .padding(horizontal = 4.dp, vertical = 6.dp),
             color = if (selected) Color(0xFF5D5E66) else Color(0xFFA2A2A8),
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
             style = MaterialTheme.typography.titleMedium,
@@ -615,13 +653,14 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
 }
 
 @Composable
-private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
+private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Column(
         modifier =
             modifier
                 .aspectRatio(0.82f)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color(0xFFFFB7F3)),
+                .background(Color(0xFFFFB7F3))
+                .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
