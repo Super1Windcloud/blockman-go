@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -195,7 +196,7 @@ private fun WorkshopTabs() {
 @Composable
 private fun RoomListCard(room: RoomCard) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(94.dp),
+        modifier = Modifier.fillMaxWidth().height(100.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
@@ -252,11 +253,11 @@ private fun RoomListCard(room: RoomCard) {
                     ) {
                         RoomMeta(text = room.typeIcon, label = room.type)
                         RoomMeta(text = "◉", label = room.language)
-                        Text(
-                            "▂▅▇",
-                            color = Color(0xFFFFB300),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
+                        Icon(
+                            Icons.Filled.SignalCellularAlt,
+                            contentDescription = "信号",
+                            tint = Color(0xFFFFB300),
+                            modifier = Modifier.size(16.dp),
                         )
                     }
                 }
@@ -404,7 +405,7 @@ private val roomCards =
             current = 22,
         ),
         RoomCard(
-            title = "مرحبا 🟢⚔🟡⚔🔵⚔🔴",
+            title = "Help make a city",
             host = "dxmovec",
             avatarRes = R.drawable.room_avatar_blond_angry,
             backgroundRes = R.drawable.card_friends_school,
@@ -414,7 +415,7 @@ private val roomCards =
             current = 22,
         ),
         RoomCard(
-            title = "مرحبا 🟢⚔🟡⚔🔵⚔🔴",
+            title = "Zombie Survival",
             host = "AnneLuke9275",
             avatarRes = R.drawable.room_avatar_blond_portrait,
             backgroundRes = R.drawable.card_friends_school,
