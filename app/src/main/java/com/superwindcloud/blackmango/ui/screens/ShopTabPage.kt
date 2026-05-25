@@ -238,7 +238,7 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
             isOpaque = false,
             cameraManipulator = cameraManipulator,
         ) {
-            ModelNode(modelInstance = modelInstance, scaleToUnits = 1.75f)
+            ModelNode(modelInstance = modelInstance, scaleToUnits = 0.75f)
         }
     }
 }
