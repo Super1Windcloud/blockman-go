@@ -78,24 +78,18 @@ private val shopItems =
 fun ShopTabPage(modifier: Modifier = Modifier) {
     var isModelFullscreen by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier
-        .fillMaxSize()
-        .background(Color(0xFFF2F2F5))) {
+    Column(modifier = modifier.fillMaxSize().background(Color(0xFFF2F2F5))) {
         AvatarPreview(
             modifier =
                 if (isModelFullscreen) {
                     Modifier.fillMaxSize()
                 } else {
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1.08f)
+                    Modifier.fillMaxWidth().weight(1.08f)
                 },
             onFullscreenClick = { isModelFullscreen = !isModelFullscreen },
         )
         if (!isModelFullscreen) {
-            WardrobePanel(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f))
+            WardrobePanel(modifier = Modifier.fillMaxWidth().weight(1f))
         }
     }
 }
@@ -113,43 +107,29 @@ private fun AvatarPreview(modifier: Modifier = Modifier, onFullscreenClick: () -
             )
     ) {
         Row(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 14.dp, top = 14.dp),
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 14.dp, top = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             CurrencyPill(symbol = "🎟", amount = "0")
             CurrencyPill(symbol = "▣", amount = "0")
         }
         AtlasButton(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 16.dp, top = 72.dp)
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 16.dp, top = 72.dp)
         )
-        PetBadge(modifier = Modifier
-            .align(Alignment.TopEnd)
-            .padding(end = 18.dp, top = 14.dp))
-        BlockmanModelPreview(modifier = Modifier
-            .align(Alignment.Center)
-            .fillMaxSize())
+        PetBadge(modifier = Modifier.align(Alignment.TopEnd).padding(end = 18.dp, top = 14.dp))
+        BlockmanModelPreview(modifier = Modifier.align(Alignment.Center).fillMaxSize())
         Column(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp),
+            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             RoundIconButton(Icons.Rounded.Expand, onClick = onFullscreenClick)
             RoundIconButton(Icons.Rounded.Cached)
         }
         CartPill(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 12.dp, bottom = 14.dp)
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 12.dp, bottom = 14.dp)
         )
         WardrobeToggle(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = 12.dp, bottom = 14.dp)
+            modifier = Modifier.align(Alignment.BottomStart).padding(start = 12.dp, bottom = 14.dp)
         )
     }
 }
@@ -158,8 +138,7 @@ private fun AvatarPreview(modifier: Modifier = Modifier, onFullscreenClick: () -
 private fun CurrencyPill(symbol: String, amount: String) {
     Row(
         modifier =
-            Modifier
-                .height(28.dp)
+            Modifier.height(28.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(Color(0x88959AA5))
                 .padding(start = 7.dp),
@@ -174,10 +153,7 @@ private fun CurrencyPill(symbol: String, amount: String) {
             style = MaterialTheme.typography.titleMedium,
         )
         Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF7D39F6)),
+            modifier = Modifier.size(28.dp).clip(CircleShape).background(Color(0xFF7D39F6)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
@@ -195,10 +171,7 @@ private fun AtlasButton(modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier =
-                Modifier
-                    .size(46.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0x99888A92)),
+                Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)).background(Color(0x99888A92)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
@@ -270,6 +243,7 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
         modifier = modifier.background(modelPreviewBackground),
         contentAlignment = Alignment.Center,
     ) {
+        val modelViewportModifier = Modifier.fillMaxHeight(0.8f).fillMaxWidth(0.58f)
         val engine = rememberEngine()
         val modelLoader = rememberModelLoader(engine)
         val cameraManipulator = remember { HorizontalOnlyCameraManipulator() }
@@ -280,15 +254,116 @@ private fun BlockmanModelPreview(modifier: Modifier = Modifier) {
                 )
             }
         SceneView(
-            modifier = Modifier
-                .fillMaxHeight(0.8f)
-                .fillMaxWidth(0.58f),
+            modifier = modelViewportModifier,
             engine = engine,
             modelLoader = modelLoader,
             isOpaque = false,
             cameraManipulator = cameraManipulator,
         ) {
             ModelNode(modelInstance = modelInstance, scaleToUnits = 0.618f)
+        }
+        // 换装叠加层暂时关闭，后续恢复试穿功能时再接回。
+        // WardrobeModelOverlay(item = selectedItem, modifier = modelViewportModifier)
+    }
+}
+
+@Composable
+private fun WardrobeModelOverlay(item: ShopItem, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier) {
+        val w = size.width
+        val h = size.height
+        val bodyCenterX = w * 0.5f
+        when (item.type) {
+            ShopItemType.Dress -> {
+                drawRoundRect(
+                    item.primary.copy(alpha = 0.86f),
+                    topLeft = Offset(w * 0.31f, h * 0.39f),
+                    size = Size(w * 0.38f, h * 0.2f),
+                    cornerRadius = CornerRadius(10f, 10f),
+                )
+                drawRect(
+                    item.secondary.copy(alpha = 0.9f),
+                    topLeft = Offset(w * 0.34f, h * 0.4f),
+                    size = Size(w * 0.32f, h * 0.05f),
+                )
+                drawLine(
+                    item.secondary.copy(alpha = 0.88f),
+                    Offset(w * 0.36f, h * 0.47f),
+                    Offset(w * 0.27f, h * 0.6f),
+                    strokeWidth = w * 0.045f,
+                )
+                drawLine(
+                    item.secondary.copy(alpha = 0.88f),
+                    Offset(w * 0.64f, h * 0.47f),
+                    Offset(w * 0.73f, h * 0.6f),
+                    strokeWidth = w * 0.045f,
+                )
+            }
+
+            ShopItemType.Top -> {
+                drawRoundRect(
+                    item.primary.copy(alpha = 0.88f),
+                    topLeft = Offset(w * 0.32f, h * 0.39f),
+                    size = Size(w * 0.36f, h * 0.18f),
+                    cornerRadius = CornerRadius(9f, 9f),
+                )
+                drawRoundRect(
+                    item.secondary.copy(alpha = 0.9f),
+                    topLeft = Offset(bodyCenterX - w * 0.07f, h * 0.4f),
+                    size = Size(w * 0.14f, h * 0.17f),
+                    cornerRadius = CornerRadius(4f, 4f),
+                )
+            }
+
+            ShopItemType.Bottoms -> {
+                drawRect(
+                    item.primary.copy(alpha = 0.9f),
+                    topLeft = Offset(w * 0.32f, h * 0.55f),
+                    size = Size(w * 0.36f, h * 0.12f),
+                )
+                drawRect(
+                    item.secondary.copy(alpha = 0.86f),
+                    topLeft = Offset(w * 0.32f, h * 0.55f),
+                    size = Size(w * 0.36f, h * 0.035f),
+                )
+            }
+
+            ShopItemType.Hair,
+            ShopItemType.HairGlasses -> {
+                drawOval(
+                    item.primary.copy(alpha = 0.82f),
+                    topLeft = Offset(w * 0.29f, h * 0.19f),
+                    size = Size(w * 0.42f, h * 0.16f),
+                )
+                drawOval(
+                    item.secondary.copy(alpha = 0.82f),
+                    topLeft = Offset(w * 0.25f, h * 0.28f),
+                    size = Size(w * 0.16f, h * 0.2f),
+                )
+                if (item.type == ShopItemType.HairGlasses) {
+                    drawRoundRect(
+                        Color(0xE622242A),
+                        topLeft = Offset(w * 0.36f, h * 0.31f),
+                        size = Size(w * 0.28f, h * 0.035f),
+                        cornerRadius = CornerRadius(6f, 6f),
+                    )
+                }
+            }
+
+            ShopItemType.Face -> {
+                drawLine(
+                    item.secondary.copy(alpha = 0.9f),
+                    Offset(w * 0.39f, h * 0.31f),
+                    Offset(w * 0.47f, h * 0.33f),
+                    strokeWidth = w * 0.02f,
+                )
+                drawLine(
+                    item.secondary.copy(alpha = 0.9f),
+                    Offset(w * 0.61f, h * 0.31f),
+                    Offset(w * 0.53f, h * 0.33f),
+                    strokeWidth = w * 0.02f,
+                )
+            }
         }
     }
 }
@@ -338,8 +413,7 @@ private class HorizontalOnlyCameraManipulator(
 private fun RoundIconButton(icon: ImageVector, onClick: (() -> Unit)? = null) {
     Box(
         modifier =
-            Modifier
-                .size(46.dp)
+            Modifier.size(46.dp)
                 .clip(CircleShape)
                 .background(Color.White)
                 .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
@@ -395,8 +469,7 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
     ) {
         Box(
             modifier =
-                Modifier
-                    .weight(1f)
+                Modifier.weight(1f)
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(24.dp))
                     .background(Color(0xFF7D39F6)),
@@ -422,32 +495,41 @@ private fun WardrobeToggle(modifier: Modifier = Modifier) {
 
 @Composable
 private fun WardrobePanel(modifier: Modifier = Modifier) {
+    var selectedCategory by remember { mutableStateOf(shopCategories.first()) }
+    val visibleItems = shopItems.filter { item ->
+        when (selectedCategory) {
+            "服饰" ->
+                item.type == ShopItemType.Dress ||
+                    item.type == ShopItemType.Top ||
+                    item.type == ShopItemType.Bottoms
+            "配饰" -> item.type == ShopItemType.HairGlasses
+            "人物" -> item.type == ShopItemType.Hair
+            "脸部" -> item.type == ShopItemType.Face
+            else -> true
+        }
+    }
     Column(modifier = modifier.background(Color(0xFFF2F2F5))) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(14.dp), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxWidth().height(14.dp), contentAlignment = Alignment.Center) {
             Box(
                 modifier =
-                    Modifier
-                        .size(width = 44.dp, height = 6.dp)
+                    Modifier.size(width = 44.dp, height = 6.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color(0xFFD8D8DD))
             )
         }
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(18.dp),
         ) {
             shopCategories.forEachIndexed { index, label ->
-                CategoryTab(label = label, selected = index == 0)
+                CategoryTab(
+                    label = label,
+                    selected = label == selectedCategory,
+                    onClick = { selectedCategory = label },
+                )
             }
         }
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color(0xFFE0E0E6)))
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xFFE0E0E6)))
         Row(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
@@ -467,7 +549,7 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
                 ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            shopItems.chunked(4).forEach { rowItems ->
+            visibleItems.chunked(4).forEach { rowItems ->
                 item {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(7.dp),
@@ -485,8 +567,11 @@ private fun WardrobePanel(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CategoryTab(label: String, selected: Boolean) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun CategoryTab(label: String, selected: Boolean, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.clickable(onClick = onClick),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Text(
             label,
             color = if (selected) Color(0xFF7D39F6) else Color(0xFF54565D),
@@ -496,8 +581,7 @@ private fun CategoryTab(label: String, selected: Boolean) {
         Spacer(Modifier.height(7.dp))
         Box(
             modifier =
-                Modifier
-                    .size(width = 30.dp, height = 3.dp)
+                Modifier.size(width = 30.dp, height = 3.dp)
                     .background(if (selected) Color(0xFF7D39F6) else Color.Transparent)
         )
     }
@@ -510,8 +594,7 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
             label,
             modifier =
                 if (selected)
-                    Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                    Modifier.clip(RoundedCornerShape(8.dp))
                         .background(Color(0xFFE4E4EA))
                         .padding(horizontal = 10.dp, vertical = 6.dp)
                 else Modifier.padding(horizontal = 4.dp, vertical = 6.dp),
@@ -522,8 +605,7 @@ private fun FilterTab(label: String, selected: Boolean, hasDot: Boolean) {
         if (hasDot) {
             Box(
                 modifier =
-                    Modifier
-                        .align(Alignment.TopEnd)
+                    Modifier.align(Alignment.TopEnd)
                         .size(7.dp)
                         .clip(CircleShape)
                         .background(Color(0xFFFF2A77))
@@ -544,15 +626,11 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
+                Modifier.fillMaxWidth()
                     .weight(1f)
                     .background(Brush.radialGradient(listOf(Color(0xFFFFE6FB), Color(0xFFFFA9ED))))
         ) {
-            Canvas(modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(6.dp)
-                .size(20.dp)) {
+            Canvas(modifier = Modifier.align(Alignment.TopStart).padding(6.dp).size(20.dp)) {
                 drawCircle(
                     Brush.sweepGradient(
                         listOf(
@@ -570,8 +648,7 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
             }
             Box(
                 modifier =
-                    Modifier
-                        .align(Alignment.TopEnd)
+                    Modifier.align(Alignment.TopEnd)
                         .padding(4.dp)
                         .size(24.dp)
                         .clip(CircleShape)
@@ -587,18 +664,12 @@ private fun ShopCard(item: ShopItem, modifier: Modifier = Modifier) {
             }
             ShopItemArt(
                 item,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxWidth(0.86f)
-                    .fillMaxHeight(0.72f),
+                modifier = Modifier.align(Alignment.Center).fillMaxWidth(0.86f).fillMaxHeight(0.72f),
             )
         }
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFFFE7F9))
-                    .padding(vertical = 5.dp),
+                Modifier.fillMaxWidth().background(Color(0xFFFFE7F9)).padding(vertical = 5.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
