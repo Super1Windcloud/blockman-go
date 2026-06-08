@@ -20,7 +20,25 @@ class QuickJsConsoleEngine : Closeable {
     }
 
     private val logs = mutableListOf<String>()
-    private val context =
+
+    fun execute(script: String): JsExecutionResult {
+        logs.clear()
+        Log.d(TAG, "$PREFIX_SCRIPT\n$script")
+        val rendered =
+            createContext().use { context ->
+                val result = context.evaluate(script)
+                val renderedResult = renderValue(result)
+                val outputLine = "$PREFIX_OUTPUT $renderedResult"
+                Log.d(TAG, outputLine)
+                buildList {
+                    addAll(logs)
+                    add(outputLine)
+                }.joinToString(separator = "\n")
+            }
+        return JsExecutionResult(rendered)
+    }
+
+    private fun createContext(): QuickJSContext =
         QuickJSContext.create().apply {
             setEnableStackTrace(true)
             QuickJSLoader.initConsoleLog(
@@ -49,21 +67,6 @@ class QuickJsConsoleEngine : Closeable {
             )
         }
 
-    fun execute(script: String): JsExecutionResult {
-        logs.clear()
-        Log.d(TAG, "$PREFIX_SCRIPT\n$script")
-        val result = context.evaluate(script)
-        val renderedResult = renderValue(result)
-        val outputLine = "$PREFIX_OUTPUT $renderedResult"
-        Log.d(TAG, outputLine)
-        val rendered =
-            buildList {
-                addAll(logs)
-                add(outputLine)
-            }.joinToString(separator = "\n")
-        return JsExecutionResult(rendered)
-    }
-
     private fun renderValue(value: Any?): String =
         when (value) {
             null -> "undefined"
@@ -78,6 +81,6 @@ class QuickJsConsoleEngine : Closeable {
         }
 
     override fun close() {
-        context.close()
+        logs.clear()
     }
 }
