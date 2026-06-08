@@ -6,4 +6,5 @@ enum class MainTab {
     Shop,
     Social,
     Profile,
+    Js,
 }

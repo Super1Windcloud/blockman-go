@@ -84,6 +84,9 @@ fun BlackMangoApp() {
                         onNavigate = navigatePlaceholder,
                     )
                 }
+                composable(AppRoute.Js.route) {
+                    JsConsoleTabPage(modifier = Modifier.fillMaxSize().statusBarsPadding())
+                }
                 composable(
                     route = AppRoute.Placeholder.route,
                     arguments =
