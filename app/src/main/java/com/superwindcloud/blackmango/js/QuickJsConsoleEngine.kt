@@ -11,6 +11,12 @@ data class JsExecutionResult(val renderedOutput: String)
 class QuickJsConsoleEngine : Closeable {
     companion object {
         private const val TAG = "QuickJsConsole"
+        private const val PREFIX_SCRIPT = "[JS-SCRIPT]"
+        private const val PREFIX_LOG = "[JS-LOG]"
+        private const val PREFIX_INFO = "[JS-INFO]"
+        private const val PREFIX_WARN = "[JS-WARN]"
+        private const val PREFIX_ERROR = "[JS-ERROR]"
+        private const val PREFIX_OUTPUT = "[JS-OUTPUT]"
     }
 
     private val logs = mutableListOf<String>()
@@ -21,23 +27,23 @@ class QuickJsConsoleEngine : Closeable {
                 this,
                 object : QuickJSContext.Console {
                     override fun log(value: String) {
-                        logs += value
-                        Log.d(TAG, value)
+                        logs += "$PREFIX_LOG $value"
+                        Log.d(TAG, "$PREFIX_LOG $value")
                     }
 
                     override fun info(value: String) {
-                        logs += "info: $value"
-                        Log.i(TAG, value)
+                        logs += "$PREFIX_INFO $value"
+                        Log.i(TAG, "$PREFIX_INFO $value")
                     }
 
                     override fun warn(value: String) {
-                        logs += "warn: $value"
-                        Log.w(TAG, value)
+                        logs += "$PREFIX_WARN $value"
+                        Log.w(TAG, "$PREFIX_WARN $value")
                     }
 
                     override fun error(value: String) {
-                        logs += "error: $value"
-                        Log.e(TAG, value)
+                        logs += "$PREFIX_ERROR $value"
+                        Log.e(TAG, "$PREFIX_ERROR $value")
                     }
                 },
             )
@@ -45,14 +51,15 @@ class QuickJsConsoleEngine : Closeable {
 
     fun execute(script: String): JsExecutionResult {
         logs.clear()
-        Log.d(TAG, "Executing script:\n$script")
+        Log.d(TAG, "$PREFIX_SCRIPT\n$script")
         val result = context.evaluate(script)
         val renderedResult = renderValue(result)
-        Log.d(TAG, "Execution result: $renderedResult")
+        val outputLine = "$PREFIX_OUTPUT $renderedResult"
+        Log.d(TAG, outputLine)
         val rendered =
             buildList {
                 addAll(logs)
-                add("=> $renderedResult")
+                add(outputLine)
             }.joinToString(separator = "\n")
         return JsExecutionResult(rendered)
     }
